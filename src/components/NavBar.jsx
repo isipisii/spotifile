@@ -10,6 +10,7 @@ const NavBar = () => {
       md:left-0 md:h-[100vh] md:w-auto"
     >
       <div className="w-full flex flex-row md:flex-col">
+        <h1 className="text-green-500 font-bold px-4 py-6">Spotifile</h1>
         {navItems.map((item) => (
           <Link href={item.href} key={item.href} className="w-full flex flex-col items-center py-3 md:px-3 gap-1 hover:bg-[#ffffff11]">
               <p className="text-[#b3b1b1] text-[1.5rem]">{item.icon}</p>
