@@ -1,7 +1,12 @@
+"use client";
 import "../styles/globals.css";
-import { Inter } from "next/font/google";
-import Provider from "@/components/Provider";
-const inter = Inter({ subsets: ["latin"] });
+import { Montserrat } from "next/font/google";
+import SeshProvider from "@/components/SeshProvider";
+import NavBar from "@/components/NavBar";
+import { Provider } from "react-redux";
+import { store } from "@/store";
+
+const montserrat = Montserrat({ subsets: ["latin"] });
 
 export const metadata = {
   title: "Create Next App",
@@ -10,10 +15,15 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <Provider>
-      <html lang="en">
-        <body className={inter.className}>{children}</body>
-      </html>
+    <Provider store={store}>
+      <SeshProvider>
+        <html lang="en">
+          <body className={`${montserrat.className} bg-black`}>
+            <NavBar />
+            {children}
+          </body>
+        </html>
+      </SeshProvider>
     </Provider>
   );
 }
