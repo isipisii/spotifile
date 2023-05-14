@@ -7,12 +7,13 @@ const Home = () => {
   const { data: session } = useSession();
 
   console.log(session)
+
   if (!session) {
     return <Login />;
   }
 
   return (
-    <div className="w-full">
+    <div className="w-full items-center justify-center">
       <Profile />
     </div>
   );
