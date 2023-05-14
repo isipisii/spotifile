@@ -18,7 +18,7 @@ export default function RootLayout({ children }) {
     <Provider store={store}>
       <SeshProvider>
         <html lang="en">
-          <body className={`${montserrat.className} bg-black`}>
+          <body className={`${montserrat.className} bg-[#121212]`}>
             <NavBar />
             {children}
           </body>
