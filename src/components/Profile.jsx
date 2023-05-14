@@ -1,7 +1,5 @@
 "use client";
 import { useGetUserQuery } from "@/services/spotify";
-import { useEffect } from "react";
-import { useDispatch } from "react-redux";
 import { setAccessToken } from "@/token/tokenSlice";
 import { useSession } from "next-auth/react";
 
@@ -13,7 +11,7 @@ const Profile = () => {
 
   return (
     <div>
-      
+
     </div>
   )
 }
