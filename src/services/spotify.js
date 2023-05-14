@@ -4,13 +4,6 @@ export const spotifyApi = createApi({
   reducerPath: "spotifyApi",
   baseQuery: fetchBaseQuery({
     baseUrl: "https://api.spotify.com/v1",
-    // prepareHeaders: ({ headers }, { getState }) => {
-    //   const accessToken  = getState().token.accessToken;
-    //   if (accessToken) {
-    //     headers.set("Authorization", `Bearer ${accessToken}`);
-    //   }
-    //   return { headers };
-    // },
   }),
   endpoints: (builder) => ({
     getUser: builder.query({
@@ -18,10 +11,34 @@ export const spotifyApi = createApi({
         url: "/me",
         headers: {
           Authorization: `Bearer ${accessToken}`,
+        },
+      }),
+    }),
+    getFollowing: builder.query({
+      query: (accessToken) => ({
+        url: "/me/following?type=artist",
+        headers: {
+          Authorization: `Bearer ${accessToken}`
+        },
+      }),
+    }),
+    getRecentlyPlayed: builder.query({
+      query: (accessToken) => ({
+        url: "/me/player/recently-played",
+        headers:{
+          Authorization: `Bearer ${accessToken}`
         }
       })
     }),
+    getPlaylists: builder.query({
+      query: (accessToken) => ({
+        url: "/me/playlists",
+        headers:{
+          Authorization: `Bearer ${accessToken}`
+        }
+      })
+    })
   }),
 });
 
-export const { useGetUserQuery } = spotifyApi;
+export const { useGetUserQuery, useGetFollowingQuery, useGetPlaylistsQuery, useGetRecentlyPlayedQuery } = spotifyApi;
