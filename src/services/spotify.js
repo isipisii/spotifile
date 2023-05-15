@@ -49,6 +49,14 @@ export const spotifyApi = createApi({
         };
       },
     }),
+    getUserTopTracks: builder.query({
+      query: (accesToken) => ({
+        url: "/me/tracks",
+        header: {
+          Authorization: `Bearer ${accesToken}` 
+        }
+      })
+    }),
   }),
 });
 
@@ -58,4 +66,5 @@ export const {
   useGetPlaylistsQuery,
   useGetRecentlyPlayedQuery,
   useGetTopArtistsOfAllTimeQuery,
+  useGetUserTopTracksQuery,
 } = spotifyApi;
