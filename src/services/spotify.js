@@ -18,27 +18,44 @@ export const spotifyApi = createApi({
       query: (accessToken) => ({
         url: "/me/following?type=artist",
         headers: {
-          Authorization: `Bearer ${accessToken}`
+          Authorization: `Bearer ${accessToken}`,
         },
       }),
     }),
     getRecentlyPlayed: builder.query({
       query: (accessToken) => ({
         url: "/me/player/recently-played",
-        headers:{
-          Authorization: `Bearer ${accessToken}`
-        }
-      })
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      }),
     }),
     getPlaylists: builder.query({
       query: (accessToken) => ({
         url: "/me/playlists",
-        headers:{
-          Authorization: `Bearer ${accessToken}`
-        }
-      })
-    })
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      }),
+    }),
+    getTopArtistsOfAllTime: builder.query({
+      query: (args) => {
+        const { accessToken, length } = args;
+        return {
+          url: `/me/top/artists?limit=${length}&time_range=long_term`,
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        };
+      },
+    }),
   }),
 });
 
-export const { useGetUserQuery, useGetFollowingQuery, useGetPlaylistsQuery, useGetRecentlyPlayedQuery } = spotifyApi;
+export const {
+  useGetUserQuery,
+  useGetFollowingQuery,
+  useGetPlaylistsQuery,
+  useGetRecentlyPlayedQuery,
+  useGetTopArtistsOfAllTimeQuery,
+} = spotifyApi;
