@@ -6,8 +6,6 @@ import Profile from "@/components/Profile";
 const Home = () => {
   const { data: session } = useSession();
 
-  console.log(session)
-
   if (!session) {
     return <Login />;
   }
