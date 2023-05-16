@@ -50,12 +50,21 @@ export const spotifyApi = createApi({
       },
     }),
     getUserTopTracks: builder.query({
-      query: (accesToken) => ({
-        url: "/me/tracks",
-        header: {
-          Authorization: `Bearer ${accesToken}` 
-        }
-      })
+      query: (args) => {
+        const { accessToken, length } = args;
+        return {
+          url: `/me/top/tracks?limit=${length}&time_range=short_term`,
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        };
+      },
+      // query: (accesToken) => ({
+      //   url: "/me/top/tracks?limit=10&time_range=short_term",
+      //   headers: {
+      //     Authorization: `Bearer ${accesToken}`
+      //   }
+      // })
     }),
   }),
 });

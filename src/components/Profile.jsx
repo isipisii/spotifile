@@ -9,6 +9,8 @@ import {
 import { useSession } from "next-auth/react";
 import { signOut } from "next-auth/react";
 import Link from "next/link";
+import moment from "moment";
+import { useEffect, useRef, useState, useCallback } from "react";
 
 const Profile = () => {
   const { data: session } = useSession();
@@ -19,12 +21,16 @@ const Profile = () => {
     accessToken: session?.accessToken,
     length: 10,
   });
+  const { data: topTracks } = useGetUserTopTracksQuery({
+    accessToken: session?.accessToken,
+    length: 10,
+  });
 
-  console.log(topArtistOfAllTime);
+  console.log(topTracks);
 
   return (
     <section className="flex items-center justify-center">
-      <div className="border-white border w-full max-w-[1200px] md:w-[92%] md:ml-[100px] p-6 flex flex-col gap-10">
+      <div className="w-full max-w-[1200px] md:w-[92%] md:ml-[100px] p-6 flex flex-col gap-10">
         {/* top part */}
         <div className="flex items-center justify-between">
           <h1 className="text-white font-bold text-[2rem]">Profile</h1>
@@ -61,9 +67,9 @@ const Profile = () => {
         {/* end of user profile part */}
 
         {/* top artists and tracks */}
-        <div className="my-8">
+        <div className="my-8 flex flex-col">
           {/* top artists */}
-          <div>
+          <div className="mb-[4rem]">
             <div className="flex justify-between items-center mb-4">
               <h1
                 className="text-white font-semibold
@@ -79,8 +85,12 @@ const Profile = () => {
               </Link>
             </div>
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-5 gap-4">
-              {topArtistOfAllTime?.items?.map((artist) => (
-                <a href={artist?.external_urls?.spotify} target="_blank">
+              {topArtistOfAllTime?.items?.map((artist, index) => (
+                <a
+                  href={artist?.external_urls?.spotify}
+                  target="_blank"
+                  key={index}
+                >
                   <div className="flex rounded-[7px] flex-col gap-1 items-center max-w-[250px] bg-[#0000002d] p-5 hover:bg-[#3534346f]">
                     <img
                       src={artist?.images[0]?.url}
@@ -100,6 +110,84 @@ const Profile = () => {
             </div>
           </div>
           {/* end of top artists */}
+
+          {/* top tracks */}
+          <div>
+            <div className="flex justify-between items-center mb-4">
+              <h1
+                className="text-white font-semibold
+                text-[1.1rem] md:text-[1.3rem]"
+              >
+                Top tracks this month
+              </h1>
+              <Link
+                href="/top-artists"
+                className="text-[#cdc8c8] text-xs md:text-sm font-semibold"
+              >
+                See more
+              </Link>
+            </div>
+
+            {/* Tracks */}
+            <div className="relative ">
+              {/* fade */}
+              {/* top */}
+              {/* <div
+                className="absolute inset-x-0 w-full h-[2rem] left-0 top-0 bg-gradient-to-b 
+              from-[#121212] via-[#121212d1] to-transparent z-[2] fade-element"
+              /> */}
+              {/* bottom */}
+              {/* <div
+                className="absolute inset-x-0 w-full h-[2rem] left-0 bottom-0 bg-gradient-to-t 
+              from-[#121212] via-[#121212d1] to-transparent z-[2] fade-element"
+              /> */}
+              <div
+                className="max-h-[200px] overflow-y-auto mb-8 md:mb-0"
+              >
+                {/* tracks container */}
+                <div className="flex flex-col gap-4">
+                  {/* track */}
+                  {topTracks?.items.map((track, index) => (
+                    <div key={index} className="flex justify-between">
+                      <div className="flex gap-3 items-center">
+                        <img
+                          src={track?.album?.images[0]?.url}
+                          alt="album image"
+                          className="w-[60px] h-[60px] md:w-[60px] md:h-[60px]"
+                        />
+                        <div>
+                          <p className="text-white text-sm md:text-base  font-medium">
+                            {track?.name}
+                          </p>
+                          <div className="flex gap-1">
+                            {track?.artists.map((artist, index) => (
+                              <p
+                                className="text-[#898585d0] text-xs md:text-sm"
+                                key={index}
+                              >
+                                {artist?.name}{" "}
+                                {track?.artists.length - 1 === index ? "" : ","}
+                              </p>
+                            ))}
+                          </div>
+                        </div>
+                      </div>
+                      <p className="text-[#898585d0] md:text-sm text-xs font-semibold">
+                        {moment
+                          .utc(
+                            moment
+                              .duration(track?.duration_ms)
+                              .as("millisecond")
+                          )
+                          .format("m:ss")}
+                      </p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+            {/* end of top tracks */}
+          </div>
         </div>
       </div>
     </section>
