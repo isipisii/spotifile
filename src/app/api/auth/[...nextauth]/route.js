@@ -1,6 +1,7 @@
 import NextAuth from "next-auth";
 import SpotifyProvider from "next-auth/providers/spotify";
 
+
 // for log in url in order to have an access with different endpoints
 const scopes = [
   "user-read-private",
@@ -84,5 +85,6 @@ const handler = NextAuth({
     },
   },
 });
+
 
 export { handler as GET, handler as POST };
