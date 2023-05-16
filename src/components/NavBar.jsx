@@ -11,8 +11,8 @@ const NavBar = () => {
       {session && (
         <nav
           className="fixed from-[#000000c3] to-[#000000] bg-gradient-to-t w-[100vw] bottom-0 flex-start 
-      items-center justify-center
-      md:left-0 md:h-[100vh] md:w-auto"
+          items-center justify-center
+          md:left-0 md:h-[100vh] md:w-auto z-10"
         >
           <div className="w-full flex flex-row md:flex-col ">
             <h1 className="text-green-500 font-bold px-4 py-6 hidden md:block">
