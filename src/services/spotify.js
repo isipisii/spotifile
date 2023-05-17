@@ -59,12 +59,6 @@ export const spotifyApi = createApi({
           },
         };
       },
-      // query: (accesToken) => ({
-      //   url: "/me/top/tracks?limit=10&time_range=short_term",
-      //   headers: {
-      //     Authorization: `Bearer ${accesToken}`
-      //   }
-      // })
     }),
   }),
 });

@@ -1,9 +1,11 @@
-import React from 'react'
 
 const TopArtists = () => {
   return (
-    <div>TopArtists</div>
-  )
-}
+    <>
+      <div className="text-white">TopArtists</div>
+      <div className="text-white"></div>
+    </>
+  );
+};
 
-export default TopArtists
+export default TopArtists;
