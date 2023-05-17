@@ -10,7 +10,8 @@ import { useSession } from "next-auth/react";
 import { signOut } from "next-auth/react";
 import Link from "next/link";
 import moment from "moment";
-import { useEffect, useRef, useState, useCallback } from "react";
+import { usePalette } from "@lauriys/react-palette";
+import { useState, useEffect } from "react";
 
 const Profile = () => {
   const { data: session } = useSession();
@@ -25,14 +26,17 @@ const Profile = () => {
     accessToken: session?.accessToken,
     length: 10,
   });
-
-  console.log(topTracks);
-
+  const { data: color, loading, error } = usePalette(userData?.images[0]?.url);
+  
   return (
     <section className="flex items-center justify-center">
-      <div className="w-full max-w-[1200px] md:w-[92%] md:ml-[100px] p-6 flex flex-col gap-10">
+      <div className="relative w-full max-w-[1200px] md:w-[92%] md:ml-[100px] flex flex-col gap-10">
         {/* top part */}
-        <div className="flex items-center justify-between">
+        <div
+          className="gradient-background"
+          style={{ '--from-color': color.darkVibrant, '--via-color': '#121212d1' }}
+        />
+        <div className="flex items-center justify-between p-6 ">
           <h1 className="text-white font-bold text-[2rem]">Profile</h1>
           <button
             className="font-medium text-white text-sm rounded-full py-2 px-5 transition-all duration-300 hover:text-black hover:bg-white border border-[#dad4d4]"
@@ -67,7 +71,7 @@ const Profile = () => {
         {/* end of user profile part */}
 
         {/* top artists and tracks */}
-        <div className="my-8 flex flex-col">
+        <div className="my-6 flex flex-col p-6">
           {/* top artists */}
           <div className="mb-[4rem]">
             <div className="flex justify-between items-center mb-4">
@@ -132,18 +136,20 @@ const Profile = () => {
             <div className="relative ">
               {/* fade */}
               {/* top */}
-              {/* <div
-                className="absolute inset-x-0 w-full h-[2rem] left-0 top-0 bg-gradient-to-b 
+              {/* {isOverflowed && (
+                <div
+                  className="absolute inset-x-0 w-full h-[2rem] left-0 top-0 bg-gradient-to-b 
               from-[#121212] via-[#121212d1] to-transparent z-[2] fade-element"
-              /> */}
+                />
+              )} */}
               {/* bottom */}
-              {/* <div
-                className="absolute inset-x-0 w-full h-[2rem] left-0 bottom-0 bg-gradient-to-t 
+              {/* {isOverflowed && (
+                <div
+                  className="absolute inset-x-0 w-full h-[2rem] left-0 bottom-0 bg-gradient-to-t 
               from-[#121212] via-[#121212d1] to-transparent z-[2] fade-element"
-              /> */}
-              <div
-                className="max-h-[200px] overflow-y-auto mb-8 md:mb-0"
-              >
+                />
+              )} */}
+              <div className="max-h-[200px] overflow-y-auto mb-8 md:mb-0">
                 {/* tracks container */}
                 <div className="flex flex-col gap-4">
                   {/* track */}
