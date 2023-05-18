@@ -12,3 +12,14 @@
     background-image: linear-gradient(to bottom, var(--from-color), var(--via-color), transparent);
     z-index: -1;
   }
+
+  .top-artist-background {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    left: 0;
+    top: 0;
+    background-image: linear-gradient(to bottom, var(--from-color), var(--via-color), transparent);
+    z-index: -1;
+  }
