@@ -27,7 +27,7 @@ const Profile = () => {
 
   return (
     <section className="flex items-center justify-center">
-      <div className="relative w-full max-w-[1200px] md:w-[92%] md:ml-[100px] flex flex-col gap-10">
+      <div className="relative w-full max-w-[1200px] md:w-[92%] md:ml-[100px] flex flex-col gap-10 p-8 ">
         {/* top part */}
         <div
           className="gradient-background"
@@ -36,8 +36,8 @@ const Profile = () => {
             "--via-color": "#121212d1",
           }}
         />
-        <div className="flex items-center justify-between p-6 ">
-          <h1 className="text-white font-bold text-[2rem]">Profile</h1>
+        <div className="flex items-center justify-between ">
+          <h1 className="text-white font-bold text-[1.6rem]">Profile</h1>
           <button
             className="font-medium text-white text-sm rounded-full py-2 px-5 transition-all duration-300 hover:text-black hover:bg-white border border-[#dad4d4]"
             onClick={signOut}
@@ -71,13 +71,9 @@ const Profile = () => {
         {/* end of user profile part */}
 
         {/* top artists and tracks */}
-        <div className="my-6 flex flex-col p-6">
+        <div className="my-6 flex flex-col">
           {/* top artists */}
-          <TopArtists
-            accessToken={session?.accessToken}
-            length={10}
-            render={true}
-          />
+          <TopArtists accessToken={session?.accessToken} length={10} render={true} />
           {/* end of top artists */}
           {/* top tracks */}
           <div>
