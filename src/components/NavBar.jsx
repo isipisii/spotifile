@@ -2,9 +2,13 @@
 import { navItems } from "@/constants";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
+import { usePathname } from "next/navigation";
 
 const NavBar = () => {
   const { data: session } = useSession();
+  const pathname = usePathname();
+
+  const isActive = (href) => pathname === href;
 
   return (
     <>
@@ -22,10 +26,12 @@ const NavBar = () => {
               <Link
                 href={item.href}
                 key={item.href}
-                className="w-full flex flex-col items-center py-3 md:px-3 gap-1 hover:bg-[#ffffff11]"
+                className={`w-full ${
+                  isActive(item.href) ? "bg-[#ffffff11]" : null
+                } flex flex-col items-center py-3 md:px-3 gap-1 hover:bg-[#ffffff11]`}
               >
-                <p className="text-[#b3b1b1] text-[1.5rem]">{item.icon}</p>
-                <p className="text-[#b3b1b1] text-[.6rem]">{item.linkName}</p>
+                <p className={` ${isActive(item.href) ? "text-green-500" : "text-[#b3b1b1]"} text-[1.5rem]`}>{item.icon}</p>
+                <p className={`text-[.6rem] ${isActive(item.href) ? "text-green-500" : "text-[#b3b1b1]"}`}>{item.linkName}</p>
               </Link>
             ))}
           </div>
