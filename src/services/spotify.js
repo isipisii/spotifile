@@ -49,6 +49,28 @@ export const spotifyApi = createApi({
         };
       },
     }),
+    getRecentTopArtists: builder.query({
+      query: (args) => {
+        const { accessToken, length } = args;
+        return {
+          url: `/me/top/artists?limit=${length}&time_range=short_term`,
+          headers:{
+            Authorization: `Bearer ${accessToken}`
+          }
+        }
+      }
+    }),
+    getTopArtistsLast6Months: builder.query({
+      query: (args) => {
+        const { accessToken, length } = args;
+        return {
+          url: `/me/top/artists?limit=${length}&time_range=medium_term`,
+          headers:{
+            Authorization: `Bearer ${accessToken}`
+          }
+        }
+      }
+    }),
     getUserTopTracks: builder.query({
       query: (args) => {
         const { accessToken, length } = args;
@@ -68,6 +90,9 @@ export const {
   useGetFollowingQuery,
   useGetPlaylistsQuery,
   useGetRecentlyPlayedQuery,
-  useGetTopArtistsOfAllTimeQuery,
   useGetUserTopTracksQuery,
+  
+  useGetTopArtistsOfAllTimeQuery,
+  useGetRecentTopArtistsQuery,
+  useGetTopArtistsLast6MonthsQuery,
 } = spotifyApi;
