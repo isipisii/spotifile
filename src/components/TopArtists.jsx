@@ -26,9 +26,9 @@ const TopArtists = ({ accessToken, length, render }) => {
   });
 
   const tabItems = [
-    { label: "All time", data: topArtistOfAllTime },
-    { label: "Last 6 months", data: topArtistLast6Months },
-    { label: "Recent", data: topArtistRecent },
+    { label: "All time", data: topArtistOfAllTime, title: "Top Artists of all time"  },
+    { label: "Last 6 months", data: topArtistLast6Months, title: "Top Artists Last 6 months" },
+    { label: "Recent", data: topArtistRecent, title: "Recent Top Artists" },
   ];
 
   const [tabIndex, setTabIndex] = useState(0);
@@ -47,16 +47,16 @@ const TopArtists = ({ accessToken, length, render }) => {
           }}
         />
       )}
-      <div className="flex justify-between items-center mb-4 flex-col gap-3 md:flex-row ">
+      <div className={`flex justify-between items-center mb-4 gap-3 ${!render ? "flex-col md:flex-row" : null}`}>
         <h1
           className={`text-white 
                ${
                  !render
-                   ? "text-[1.6rem] font-bold"
+                   ? "text-[1.6rem] font-bold text-center" 
                    : "md:text-[1.3rem] font-semibold text-[1.1rem]"
                }`}
         >
-          {render ? "Top Artists of all time" : "Top Artists"}
+          {render ? "Top Artists of all time" : tabItems[tabIndex].title}
         </h1>
         {/*it will only render in profile component */}
         {render && (
@@ -73,7 +73,7 @@ const TopArtists = ({ accessToken, length, render }) => {
           <div className="flex gap-2">
             {tabItems.map((tab, index) => (
               <p
-                className={`${tabIndex === index ? "bg-white text-black" : null } text-white font-medium text-xs transition-all duration-300 hover:bg-white hover:text-black md:text-sm cursor-pointer px-3 py-1 border border-white rounded-full`}
+                className={`${tabIndex === index ? "bg-white text-[#000000]" : undefined } text-white font-medium text-xs transition-all duration-300 hover:bg-white hover:text-black md:text-sm cursor-pointer px-3 py-1 border border-white rounded-full`}
                 onClick={() => setTabIndex(index)}
               >
                 {tab.label}
