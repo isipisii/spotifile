@@ -1,7 +1,6 @@
 import NextAuth from "next-auth";
 import SpotifyProvider from "next-auth/providers/spotify";
 
-
 // for log in url in order to have an access with different endpoints
 const scopes = [
   "user-read-private",
@@ -22,8 +21,6 @@ const params = {
 const LOGIN_URL =
   "https://accounts.spotify.com/authorize?" +
   new URLSearchParams(params).toString();
-
-
   
  // refresh token
 export async function getRefreshedAccessToken(token) {
