@@ -1,9 +1,11 @@
-import React from 'react'
+"use client"; 
 
-const TopTracks = () => {
-  return (
-    <div>TopTracks</div>
-  )
-}
+import { useSession } from "next-auth/react";
+import TopTracks from "@/components/TopTracks";
 
-export default TopTracks
+const TopTracksPage = () => {
+  const { data: session } = useSession();
+  return <TopTracks accessToken={session?.accessToken} />;
+};
+
+export default TopTracksPage;
