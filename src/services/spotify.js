@@ -115,6 +115,14 @@ export const spotifyApi = createApi({
         };
       },
     }),
+    getRecentlyPlayed: builder.query({
+      query: (accessToken) => ({
+        url: "/me/player/recently-played",
+        headers: {
+          Authorization: `Bearer ${accessToken}`
+        }
+      })
+    })
   }),
 });
 
@@ -132,4 +140,5 @@ export const {
   useGetTopArtistsOfAllTimeQuery,
   useGetRecentTopArtistsQuery,
   useGetTopArtistsLast6MonthsQuery,
+
 } = spotifyApi;
