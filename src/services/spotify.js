@@ -71,11 +71,33 @@ export const spotifyApi = createApi({
         };
       },
     }),
-    getUserTopTracks: builder.query({
+    getRecentTopTracks: builder.query({
       query: (args) => {
         const { accessToken, length } = args;
         return {
           url: `/me/top/tracks?limit=${length}&time_range=short_term`,
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        };
+      },
+    }),
+    getLast6MonthsTopTracks: builder.query({
+      query: (args) => {
+        const { accessToken, length } = args;
+        return {
+          url: `/me/top/tracks?limit=${length}&time_range=medium_term`,
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        };
+      },
+    }),
+    getTopTracksOfAllTime: builder.query({
+      query: (args) => {
+        const { accessToken, length } = args;
+        return {
+          url: `/me/top/tracks?limit=${length}&time_range=long_term`,
           headers: {
             Authorization: `Bearer ${accessToken}`,
           },
@@ -101,7 +123,10 @@ export const {
   useGetFollowingQuery,
   useGetPlaylistsQuery,
   useGetRecentlyPlayedQuery,
-  useGetUserTopTracksQuery,
+
+  useGetRecentTopTracksQuery,
+  useGetTopTracksOfAllTimeQuery,
+  useGetLast6MonthsTopTracksQuery,
   useGetTrackRecommendationsQuery,
 
   useGetTopArtistsOfAllTimeQuery,
