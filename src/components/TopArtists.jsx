@@ -10,25 +10,33 @@ import { usePalette } from "@lauriys/react-palette";
 import { useState } from "react";
 
 const TopArtists = ({ accessToken, length, render }) => {
-  const { data: topArtistOfAllTime } = useGetTopArtistsOfAllTimeQuery({
+  const { data: topArtistsOfAllTime } = useGetTopArtistsOfAllTimeQuery({
     accessToken,
     length,
   });
 
-  const { data: topArtistRecent } = useGetRecentTopArtistsQuery({
+  const { data: topArtistsRecent } = useGetRecentTopArtistsQuery({
     accessToken,
     length,
   });
 
-  const { data: topArtistLast6Months } = useGetTopArtistsLast6MonthsQuery({
+  const { data: topArtistsLast6Months } = useGetTopArtistsLast6MonthsQuery({
     accessToken,
     length,
   });
 
   const tabItems = [
-    { label: "All time", data: topArtistOfAllTime, title: "Top Artists of all time"  },
-    { label: "Last 6 months", data: topArtistLast6Months, title: "Top Artists Last 6 months" },
-    { label: "Recent", data: topArtistRecent, title: "Recent Top Artists" },
+    {
+      label: "All time",
+      data: topArtistsOfAllTime,
+      title: "Top Artists of all time",
+    },
+    {
+      label: "Last 6 months",
+      data: topArtistsLast6Months,
+      title: "Top Artists Last 6 months",
+    },
+    { label: "Recent", data: topArtistsRecent, title: "Recent Top Artists" },
   ];
 
   const [tabIndex, setTabIndex] = useState(0);
@@ -36,7 +44,7 @@ const TopArtists = ({ accessToken, length, render }) => {
   const { data: color } = usePalette(topArtistImage);
 
   return (
-    <div className={`mb-[4rem] relative ${!render ? "p-8 md:p-10" : null}`}>
+    <div className={`mb-[4rem] relative ${!render ? "p-8" : null}`}>
       {/* to avoid rendering in the profile component */}
       {!render && (
         <div
@@ -47,12 +55,16 @@ const TopArtists = ({ accessToken, length, render }) => {
           }}
         />
       )}
-      <div className={`flex justify-between items-center mb-4 gap-3 ${!render ? "flex-col md:flex-row" : null}`}>
+      <div
+        className={`flex justify-between items-center mb-4 gap-3 ${
+          !render ? "flex-col md:flex-row" : null
+        }`}
+      >
         <h1
           className={`text-white 
                ${
                  !render
-                   ? "text-[1.6rem] font-bold text-center" 
+                   ? "text-[1.6rem] font-bold text-center"
                    : "md:text-[1.3rem] font-semibold text-[1.1rem]"
                }`}
         >
@@ -73,8 +85,11 @@ const TopArtists = ({ accessToken, length, render }) => {
           <div className="flex gap-2">
             {tabItems.map((tab, index) => (
               <p
-                className={`${tabIndex === index ? "bg-white text-[#000000]" : undefined } text-white font-medium text-xs transition-all duration-300 hover:bg-white hover:text-black md:text-sm cursor-pointer px-3 py-1 border border-white rounded-full`}
+                className={`${
+                  tabIndex === index ? "bg-white text-[#000000]" : "text-white"
+                }  font-medium text-xs transition-all duration-300 hover:bg-white hover:text-black md:text-sm cursor-pointer px-3 py-1 border border-white rounded-full`}
                 onClick={() => setTabIndex(index)}
+                key={index}
               >
                 {tab.label}
               </p>
