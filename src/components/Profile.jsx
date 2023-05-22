@@ -4,7 +4,7 @@ import {
   useGetFollowingQuery,
   useGetPlaylistsQuery,
   useGetTrackRecommendationsQuery,
-  useGetUserTopTracksQuery,
+  useGetRecentTopTracksQuery,
 } from "@/services/spotify";
 import { useSession } from "next-auth/react";
 import { signOut } from "next-auth/react";
@@ -18,7 +18,7 @@ const Profile = () => {
   const { data: userData } = useGetUserQuery(session?.accessToken);
   const { data: followingData } = useGetFollowingQuery(session?.accessToken);
   const { data: playlistsData } = useGetPlaylistsQuery(session?.accessToken);
-  const { data: topTracks } = useGetUserTopTracksQuery({
+  const { data: topTracks } = useGetRecentTopTracksQuery({
     accessToken: session?.accessToken,
     length: 10,
   });
@@ -37,8 +37,6 @@ const Profile = () => {
     }
     return topTrackIds;
   }
-
-  console.log(trackRecommendation)
 
   return (
     <section
@@ -113,7 +111,7 @@ const Profile = () => {
             {/* Tracks */}
             <div className="max-h-[200px] overflow-y-auto mb-8 md:mb-0">
               {/* tracks container */}
-              <div className="flex flex-col gap-4">
+              <div className="flex flex-col">
                 {/* track */}
                 {topTracks?.items.map((track, index) => (
                   <Track track={track} key={index} />
@@ -132,12 +130,11 @@ const Profile = () => {
               >
                 Tracks recommended for you
               </h1>
-            </div>
-
+            </div> 
             {/* Track recos */}
             <div className="max-h-[200px] overflow-y-auto mb-8 md:mb-0">
               {/* track reco container */}
-              <div className="flex flex-col gap-4">
+              <div className="flex flex-col">
                 {/* track reco */}
                 {trackRecommendation?.tracks.map((track, index) => (
                   <Track track={track} key={index} />
