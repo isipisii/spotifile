@@ -36,7 +36,11 @@ const TopArtists = ({ accessToken, length, render }) => {
       data: topArtistsLast6Months,
       title: "Top Artists Last 6 months",
     },
-    { label: "This month", data: topArtistsRecent, title: "Top Artists this month" },
+    {
+      label: "This month",
+      data: topArtistsRecent,
+      title: "Top Artists this month",
+    },
   ];
 
   const [tabIndex, setTabIndex] = useState(0);
