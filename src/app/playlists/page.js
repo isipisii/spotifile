@@ -1,16 +1,12 @@
+"use client";
+import Playlists from "@/components/Playlists";
+import { useSession } from "next-auth/react";
 
-const Playlists = () => {
-  return <div>Playlists</div>;
+const PlaylistsPage = () => {
+  const { data: session } = useSession();
+  console.log(session?.accessToken)
+
+  return <Playlists accessToken={session?.accessToken} />;
 };
 
-export default Playlists;
-
-// export async function getStaticSideProps(context) {
-//   const session = await getSession(context)
-
-//   return {
-//     props: {
-//       session,
-//     },
-//   }
-// }
+export default PlaylistsPage;
