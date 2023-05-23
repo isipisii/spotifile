@@ -1,4 +1,3 @@
-"use client";
 import { useGetRecentlyPlayedQuery } from "@/services/spotify";
 import Track from "./Track";
 import { usePalette } from "@lauriys/react-palette";
