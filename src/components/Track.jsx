@@ -29,7 +29,7 @@ const Track = ({ track }) => {
             </div>
           </div>
         </div>
-        <p className="text-[#898585d0] text-[.85rem] md:text-[.87rem] font-semibold">
+        <p className="text-[#898585d0] text-[.6rem] md:text-[.8rem] font-semibold">
           {moment
             .utc(moment.duration(track?.duration_ms).as("millisecond"))
             .format("m:ss")}
