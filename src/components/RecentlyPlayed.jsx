@@ -1,12 +1,12 @@
+"use client"
 import { useGetRecentlyPlayedQuery } from "@/services/spotify";
 import Track from "./Track";
 import { usePalette } from "@lauriys/react-palette";
 
-const RecentlyPlayed = ({ accessToken }) => {
-  const { data: recentlyPlayed } = useGetRecentlyPlayedQuery(accessToken);
+const RecentlyPlayed = () => {
+  const { data: recentlyPlayed } = useGetRecentlyPlayedQuery();
   const mostRecentTrackImage = recentlyPlayed?.items[0]?.track?.album?.images[0]?.url
   const {data: color} = usePalette(mostRecentTrackImage)
-  console.log(recentlyPlayed);
 
   return (
     <section
@@ -23,7 +23,7 @@ const RecentlyPlayed = ({ accessToken }) => {
           </h1>
         </div>
         {/* Tracks */}
-        <div className="max-h-[550px] md:max-h-[400px] overflow-y-auto mb-12 md:mb-0">
+        <div className="max-h-[750px] md:max-h-[550px] h-full overflow-y-auto mb-12 md:mb-0">
           {/* tracks container */}
           <div className="flex flex-col">
             {/* track */}
