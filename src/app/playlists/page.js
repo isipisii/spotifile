@@ -1,12 +1,16 @@
-"use client";
+"use client"
 import Playlists from "@/components/Playlists";
+import { useDispatch } from "react-redux";
+import { setAccessToken } from "@/auth/authSlice";
 import { useSession } from "next-auth/react";
 
 const PlaylistsPage = () => {
-  const { data: session } = useSession();
-  console.log(session?.accessToken)
 
-  return <Playlists accessToken={session?.accessToken} />;
+  const dispatch = useDispatch();
+  const { data: session } = useSession();
+  dispatch(setAccessToken(session?.accessToken));
+  
+  return <Playlists />;
 };
 
 export default PlaylistsPage;
