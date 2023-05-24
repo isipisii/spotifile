@@ -6,7 +6,6 @@ import {
   useGetTrackRecommendationsQuery,
   useGetRecentTopTracksQuery,
 } from "@/services/spotify";
-import { useSession } from "next-auth/react";
 import { signOut } from "next-auth/react";
 import Link from "next/link";
 import { usePalette } from "@lauriys/react-palette";
@@ -14,26 +13,23 @@ import TopArtists from "./TopArtists";
 import Track from "./Track";
 
 const Profile = () => {
-  const { data: session } = useSession();
-  const { data: userData } = useGetUserQuery(session?.accessToken);
-  const { data: followingData } = useGetFollowingQuery(session?.accessToken);
-  const { data: playlistsData } = useGetPlaylistsQuery(session?.accessToken);
+  const { data: userData } = useGetUserQuery();
+  const { data: followingData } = useGetFollowingQuery();
+  const { data: playlistsData } = useGetPlaylistsQuery();
   const { data: topTracks } = useGetRecentTopTracksQuery({
-    accessToken: session?.accessToken,
     length: 10,
   });
   const { data: trackRecommendation } = useGetTrackRecommendationsQuery({
-    accessToken: session?.accessToken,
     topTrackIds: generateTopTrackIds(),
     length: 10,
   });
   const { data: color } = usePalette(userData?.images[0]?.url);
 
   // to get the ids of the top tracks and able to get the track recommendations
-  function generateTopTrackIds(){
-    const topTrackIds = []
-    for(let i = 1; i <= 5; i++){
-      topTrackIds.push(topTracks?.items[i]?.id)
+  function generateTopTrackIds() {
+    const topTrackIds = [];
+    for (let i = 1; i <= 5; i++) {
+      topTrackIds.push(topTracks?.items[i]?.id);
     }
     return topTrackIds;
   }
@@ -86,7 +82,6 @@ const Profile = () => {
         <div className="my-6 flex flex-col">
           {/* top artists */}
           <TopArtists
-            accessToken={session?.accessToken}
             length={10}
             render={true}
           />
@@ -121,8 +116,8 @@ const Profile = () => {
           </div>
           {/* end of top tracks */}
 
-           {/* track recommendations */}
-           <div>
+          {/* track recommendations */}
+          <div>
             <div className="flex justify-between items-center mb-4">
               <h1
                 className="text-white font-semibold
@@ -130,7 +125,7 @@ const Profile = () => {
               >
                 Tracks recommended for you
               </h1>
-            </div> 
+            </div>
             {/* Track recos */}
             <div className="max-h-[200px] overflow-y-auto mb-8 md:mb-0">
               {/* track reco container */}

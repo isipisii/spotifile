@@ -9,19 +9,16 @@ import ArtistCard from "./ArtistCard";
 import { usePalette } from "@lauriys/react-palette";
 import { useState } from "react";
 
-const TopArtists = ({ accessToken, length, render }) => {
+const TopArtists = ({ length, render }) => {
   const { data: topArtistsOfAllTime } = useGetTopArtistsOfAllTimeQuery({
-    accessToken,
     length,
   });
 
   const { data: topArtistsRecent } = useGetRecentTopArtistsQuery({
-    accessToken,
     length,
   });
 
   const { data: topArtistsLast6Months } = useGetTopArtistsLast6MonthsQuery({
-    accessToken,
     length,
   });
 
