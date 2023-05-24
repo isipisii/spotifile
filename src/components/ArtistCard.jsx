@@ -9,7 +9,7 @@ const ArtistCard = ({ artist, index }) => {
         <img
           src={artist?.images[0]?.url}
           alt="artist-profile"
-          className="rounded-[100%] shadow-md shadow-[#02020292] object-cover h-[100px] w-[100px] xs:h-[110px] xs:w-[110px] sm:w-[120px] sm:h-[120px] md:h-[150px] md:w-[150px] lg:h-[150px] lg:w-[150px]"
+          className="rounded-[100%] shadow-md shadow-[#02020292] object-cover w-[110px] h-[110px] xs:w-[135px] xs:h-[135px]  sm:w-[135px] sm:h-[135px] md:h-[140px] md:w-[140px] lg:h-[150px] lg:w-[150px]"
         />
         <h3 className="text-white text-[.8rem] sm:text-sm md:text-base mt-2 font-medium text-center">
           {artist?.name}
