@@ -3,6 +3,7 @@ import { navItems } from "@/constants";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
 import { usePathname } from "next/navigation";
+import Image from "next/image";
 
 const NavBar = () => {
   const { data: session } = useSession();
@@ -19,9 +20,12 @@ const NavBar = () => {
           md:left-0 md:h-[100vh] md:w-auto z-10"
         >
           <div className="w-full flex flex-row md:flex-col ">
-            <h1 className="text-green-500 font-bold px-4 py-6 hidden md:block">
-              Spotifile
-            </h1>
+            <div className="flex flex-col items-center gap-2 py-6 px-4">
+              <Image src="/images/spotifylogo.png" width={30} height={30}/>
+              <h1 className="text-green-500 font-bold">
+                Spotifile
+              </h1>
+            </div>
             {navItems.map((item) => (
               <Link
                 href={item.href}
@@ -30,8 +34,20 @@ const NavBar = () => {
                   isActive(item.href) ? "bg-[#ffffff11]" : null
                 } flex flex-col items-center py-3 md:px-3 gap-1 hover:bg-[#ffffff11]`}
               >
-                <p className={` ${isActive(item.href) ? "text-green-500" : "text-[#b3b1b1]"} text-[1.5rem]`}>{item.icon}</p>
-                <p className={`text-[.6rem] ${isActive(item.href) ? "text-green-500" : "text-[#b3b1b1]"}`}>{item.linkName}</p>
+                <p
+                  className={` ${
+                    isActive(item.href) ? "text-green-500" : "text-[#b3b1b1]"
+                  } text-[1.5rem]`}
+                >
+                  {item.icon}
+                </p>
+                <p
+                  className={`text-[.6rem] ${
+                    isActive(item.href) ? "text-green-500" : "text-[#b3b1b1]"
+                  }`}
+                >
+                  {item.linkName}
+                </p>
               </Link>
             ))}
           </div>
