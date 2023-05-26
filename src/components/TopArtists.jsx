@@ -7,20 +7,12 @@ import {
 import Link from "next/link";
 import ArtistCard from "./ArtistCard";
 import { usePalette } from "@lauriys/react-palette";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
-const TopArtists = ({ length, render }) => {
-  const { data: topArtistsOfAllTime } = useGetTopArtistsOfAllTimeQuery({
-    length,
-  });
-
-  const { data: topArtistsRecent } = useGetRecentTopArtistsQuery({
-    length,
-  });
-
-  const { data: topArtistsLast6Months } = useGetTopArtistsLast6MonthsQuery({
-    length,
-  });
+const TopArtists = ({ length, render, session }) => {
+  const { data: topArtistsOfAllTime, refetch: refetchTopArtistsOfAllTime} = useGetTopArtistsOfAllTimeQuery({ length }, session?.accessToken && session);
+  const { data: topArtistsRecent, refetch: refetchTopArtistsRecent } = useGetRecentTopArtistsQuery({ length }, session?.accessToken && session);
+  const { data: topArtistsLast6Months, refetch: refetchTopArtistsLast6Months } = useGetTopArtistsLast6MonthsQuery({ length }, session?.accessToken && session);
 
   const tabItems = [
     {
@@ -43,6 +35,14 @@ const TopArtists = ({ length, render }) => {
   const [tabIndex, setTabIndex] = useState(0);
   const topArtistImage = tabItems[tabIndex].data?.items[0]?.images[0]?.url; // to get the image of the top artist and for extraction of its color
   const { data: color } = usePalette(topArtistImage);
+
+  useEffect(() => {
+    if (session?.accessToken) {
+      refetchTopArtistsOfAllTime();
+      refetchTopArtistsRecent();
+      refetchTopArtistsLast6Months();
+    }
+  }, [session, refetchTopArtistsOfAllTime, refetchTopArtistsRecent, refetchTopArtistsLast6Months])
 
   return (
     <div className={`mb-[4rem] relative ${!render ? "p-8" : null}`}>

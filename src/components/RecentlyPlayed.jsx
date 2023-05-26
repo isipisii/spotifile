@@ -1,12 +1,20 @@
 "use client"
 import { useGetRecentlyPlayedQuery } from "@/services/spotify";
+import { useEffect } from "react";
 import Track from "./Track";
 import { usePalette } from "@lauriys/react-palette";
 
-const RecentlyPlayed = () => {
-  const { data: recentlyPlayed } = useGetRecentlyPlayedQuery();
+const RecentlyPlayed = ({ session }) => {
+  const { data: recentlyPlayed, isLoading, refetch } = useGetRecentlyPlayedQuery(session?.accessToken && session);
   const mostRecentTrackImage = recentlyPlayed?.items[0]?.track?.album?.images[0]?.url
   const {data: color} = usePalette(mostRecentTrackImage)
+
+  // refetch data when session changes and accessToken is available
+  useEffect(() => {
+    if (session?.accessToken) {
+      refetch();
+    }
+  }, [session, refetch]);
 
   return (
     <section

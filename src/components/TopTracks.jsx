@@ -6,19 +6,13 @@ import {
 } from "@/services/spotify";
 import Track from "./Track";
 import { usePalette } from "@lauriys/react-palette";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
-const TopTracks = () => {
-  const { data: topTracksRecent } = useGetRecentTopTracksQuery({
-    length: 50,
-  });
-  const { data: topTracksLast6Months } = useGetLast6MonthsTopTracksQuery({
-    length: 50,
-  });
-  const { data: topTracksOfAllTime } = useGetTopTracksOfAllTimeQuery({
-    length: 50,
-  });
-
+const TopTracks = ({ session }) => {
+  const { data: topTracksRecent, refetch: refetchTopTracksRecent } = useGetRecentTopTracksQuery({ length: 50 }, session?.accessToken && session);
+  const { data: topTracksLast6Months,  refetch: refetchTopTracksLast6Months } = useGetLast6MonthsTopTracksQuery({ length: 50 }, session?.accessToken && session);
+  const { data: topTracksOfAllTime,  refetch: refetchTopTracksOfAllTime } = useGetTopTracksOfAllTimeQuery({ length: 50 }, session?.accessToken && session);
+ 
   const tabItems = [
     {
       label: "All time",
@@ -36,10 +30,19 @@ const TopTracks = () => {
       title: "Top Tracks this month",
     },
   ];
+  
   const [tabIndex, setTabIndex] = useState(0);
+  const topTrackImage = tabItems[tabIndex].data?.items[0]?.album.images[0]?.url; // get the first track image
+  const { data: color } = usePalette(topTrackImage); //extract color from image
 
-  const topTrackImage = tabItems[tabIndex].data?.items[0]?.album.images[0]?.url;
-  const { data: color } = usePalette(topTrackImage);
+  // refetch data when session changes and accessToken is available
+  useEffect(() => {
+    if (session?.accessToken) {
+      refetchTopTracksRecent();
+      refetchTopTracksLast6Months();
+      refetchTopTracksOfAllTime();
+    }
+  }, [session, refetchTopTracksRecent, refetchTopTracksLast6Months, refetchTopTracksOfAllTime]);
 
   return (
     <section

@@ -1,7 +1,7 @@
 "use client"
 import TopArtists from "@/components/TopArtists";
 import { useDispatch } from "react-redux";
-import { setAccessToken } from "@/auth/authSlice";
+import { setAccessToken } from "@/slice/authSlice";
 import { useSession } from "next-auth/react";
 
 const TopArtistsPage = () => {
@@ -12,7 +12,7 @@ const TopArtistsPage = () => {
   return (
     <section className="flex items-center justify-center">
       <div className="relative w-full max-w-[1200px] md:w-[92%] md:ml-[100px] flex flex-col gap-10 ">
-        <TopArtists length={20}/>
+        <TopArtists session={session} length={20}/>
       </div>
     </section>
   );

@@ -1,7 +1,7 @@
 "use client";
 import TopTracks from "@/components/TopTracks";
 import { useDispatch } from "react-redux";
-import { setAccessToken } from "@/auth/authSlice";
+import { setAccessToken } from "@/slice/authSlice";
 import { useSession } from "next-auth/react";
 
 const TopTracksPage = () => {
@@ -9,7 +9,7 @@ const TopTracksPage = () => {
   const { data: session } = useSession();
   dispatch(setAccessToken(session?.accessToken));
 
-  return <TopTracks />;
+  return <TopTracks session={session} />;
 };
 
 export default TopTracksPage;
