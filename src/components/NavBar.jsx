@@ -20,7 +20,7 @@ const NavBar = () => {
           md:left-0 md:h-[100vh] md:w-auto z-10"
         >
           <div className="w-full flex flex-row md:flex-col ">
-            <div className="flex flex-col items-center gap-2 py-6 px-4">
+            <div className="hidden md:flex flex-col items-center gap-2 py-6 px-4">
               <Image src="/images/spotifylogo.png" width={30} height={30}/>
               <h1 className="text-green-500 font-bold">
                 Spotifile
