@@ -1,13 +1,13 @@
 "use client";
-import Link from "next/link";
 import moment from "moment";
 
 const Track = ({ track }) => {
   return (
-    <Link href={`/track/${track.id}`}>
+    // <Link href={`/track/${track.id}`}>
       <div className="flex justify-between hover:bg-[#3534346f] p-2 items-center rounded-md">
         <div className="flex gap-3 items-center">
           <img
+            loading="lazy"
             src={track?.album?.images[0]?.url}
             alt="album image"
             className="w-[45px] h-[45px] sm:w-[50px] md:h-[50px] rounded-sm"
@@ -35,7 +35,7 @@ const Track = ({ track }) => {
             .format("m:ss")}
         </p>
       </div>
-    </Link>
+    // </Link>
   );
 };
 

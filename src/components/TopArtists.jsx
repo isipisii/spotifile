@@ -8,27 +8,49 @@ import Link from "next/link";
 import ArtistCard from "./ArtistCard";
 import { usePalette } from "@lauriys/react-palette";
 import { useState, useEffect } from "react";
+import ArtistCardLoader from "./Loaders/ArtistCardLoader";
 
 const TopArtists = ({ length, render, session }) => {
-  const { data: topArtistsOfAllTime, refetch: refetchTopArtistsOfAllTime} = useGetTopArtistsOfAllTimeQuery({ length }, session?.accessToken && session);
-  const { data: topArtistsRecent, refetch: refetchTopArtistsRecent } = useGetRecentTopArtistsQuery({ length }, session?.accessToken && session);
-  const { data: topArtistsLast6Months, refetch: refetchTopArtistsLast6Months } = useGetTopArtistsLast6MonthsQuery({ length }, session?.accessToken && session);
+  const {
+    data: topArtistsOfAllTime,
+    refetch: refetchTopArtistsOfAllTime,
+    isLoading: isTopArtistLoading,
+  } = useGetTopArtistsOfAllTimeQuery(
+    { length },
+    session?.accessToken && session
+  );
+  const {
+    data: topArtistsRecent,
+    refetch: refetchTopArtistsRecent,
+    isLoading: isTopArtistRecentLoading,
+  } = useGetRecentTopArtistsQuery({ length }, session?.accessToken && session);
+  const {
+    data: topArtistsLast6Months,
+    refetch: refetchTopArtistsLast6Months,
+    isLoading: isTopArtist6MonthsLoading,
+  } = useGetTopArtistsLast6MonthsQuery(
+    { length },
+    session?.accessToken && session
+  );
 
   const tabItems = [
     {
       label: "All time",
       data: topArtistsOfAllTime,
       title: "Top Artists of all time",
+      isLoading: isTopArtistLoading,
     },
     {
       label: "Last 6 months",
       data: topArtistsLast6Months,
       title: "Top Artists Last 6 months",
+      isLoading: isTopArtist6MonthsLoading,
     },
     {
       label: "This month",
       data: topArtistsRecent,
       title: "Top Artists this month",
+      isLoading: isTopArtistRecentLoading,
     },
   ];
 
@@ -36,16 +58,20 @@ const TopArtists = ({ length, render, session }) => {
   const topArtistImage = tabItems[tabIndex].data?.items[0]?.images[0]?.url; // to get the image of the top artist and for extraction of its color
   const { data: color } = usePalette(topArtistImage);
 
+  function refetchTopArtists() {
+    refetchTopArtistsRecent();
+    refetchTopArtistsLast6Months();
+    refetchTopArtistsOfAllTime();
+  }
+
   useEffect(() => {
     if (session?.accessToken) {
-      refetchTopArtistsOfAllTime();
-      refetchTopArtistsRecent();
-      refetchTopArtistsLast6Months();
+      refetchTopArtists();
     }
-  }, [session, refetchTopArtistsOfAllTime, refetchTopArtistsRecent, refetchTopArtistsLast6Months])
+  }, [session?.accessToken]);
 
   return (
-    <div className={`mb-[4rem] relative ${!render ? "p-8" : null}`}>
+    <div className={`mb-[4rem] ${!render ? "p-8" : null}`}>
       {/* to avoid rendering in the profile component */}
       {!render && (
         <div
@@ -75,7 +101,7 @@ const TopArtists = ({ length, render, session }) => {
         {render && (
           <Link
             href="/top-artists"
-            className="text-[#cdc8c8] text-xs md:text-sm font-semibold"
+            className="text-[#cdc8c8] text-xs md:text-sm font-semibold hover:underline-offset-2 hover:underline"
           >
             See more
           </Link>
@@ -98,11 +124,19 @@ const TopArtists = ({ length, render, session }) => {
           </div>
         )}
       </div>
-      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-5 gap-4">
-        {tabItems[tabIndex].data?.items.map((artist, index) => (
-          <ArtistCard artist={artist} key={index} index={index} />
-        ))}
-      </div>
+      {tabItems[tabIndex].isLoading || !tabItems[tabIndex].data ? (
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-5 gap-4">
+          {[... new Array(10)].map((_, index) => (
+            <ArtistCardLoader key={index} />
+          ))}
+        </div>
+        ) : (
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-5 gap-4">
+          {tabItems[tabIndex].data?.items.map((artist, index) => (
+            <ArtistCard artist={artist} key={index} index={index} />
+          ))}
+        </div>
+      )}
     </div>
   );
 };

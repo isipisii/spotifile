@@ -10,8 +10,8 @@ const TopArtistsPage = () => {
   dispatch(setAccessToken(session?.accessToken));
   
   return (
-    <section className="flex items-center justify-center">
-      <div className="relative w-full max-w-[1200px] md:w-[92%] md:ml-[100px] flex flex-col gap-10 ">
+    <section className="flex items-center justify-center relative">
+      <div className="w-full max-w-[1200px] md:w-[92%] md:ml-[100px] flex flex-col gap-10 ">
         <TopArtists session={session} length={20}/>
       </div>
     </section>

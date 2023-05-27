@@ -11,18 +11,33 @@ import Link from "next/link";
 import { usePalette } from "@lauriys/react-palette";
 import TopArtists from "./TopArtists";
 import Track from "./Track";
+import TrackCardLoader from "./Loaders/TrackCardLoader";
 
-const Profile = () => {
-  const { data: userData } = useGetUserQuery();
-  const { data: followingData } = useGetFollowingQuery();
-  const { data: playlistsData } = useGetPlaylistsQuery();
-  const { data: topTracks } = useGetRecentTopTracksQuery({
-    length: 10,
-  });
-  const { data: trackRecommendation } = useGetTrackRecommendationsQuery({
-    topTrackIds: generateTopTrackIds(),
-    length: 10,
-  });
+const Profile = ({ session }) => {
+  const { data: userData, isLoading: isUserLoading } = useGetUserQuery(
+    session?.accesToken && session
+  );
+  const { data: followingData } = useGetFollowingQuery(
+    session?.accesToken && session
+  );
+  const { data: playlistsData } = useGetPlaylistsQuery(
+    session?.accesToken && session
+  );
+  const { data: topTracks, isLoading: isTopTracksLoading } =
+    useGetRecentTopTracksQuery(
+      {
+        length: 10,
+      },
+      session?.accesToken && session
+    );
+  const { data: trackRecommendation, isLoading: isTrackRecoLoading } =
+    useGetTrackRecommendationsQuery(
+      {
+        topTrackIds: generateTopTrackIds(),
+        length: 10,
+      },
+      session?.accesToken && session
+    );
   const { data: color } = usePalette(userData?.images[0]?.url);
 
   // to get the ids of the top tracks and able to get the track recommendations
@@ -56,24 +71,36 @@ const Profile = () => {
 
         {/* user profile part */}
         <div className="w-full flex items-center justify-center">
-          <div className="flex flex-col items-center ">
-            <a href={userData?.external_urls?.spotify}>
-              <img
-                className="rounded-full h-[150px] w-[150px]"
-                src={userData?.images[0]?.url}
-                alt={`${userData?.display_name}'s profile`}
-              />
-            </a>
-            <h1 className="text-center text-white text-[4rem] font-bold">
-              {userData?.display_name}
-            </h1>
-            <div>
-              <p className="text-center text-sm font-medium text-white">
-                {userData?.followers?.total} Follower •{" "}
-                {followingData?.artists?.total} Following •{" "}
-                {playlistsData?.total} Playlists
-              </p>
-            </div>
+          <div className="flex flex-col items-center gap-2">
+            {/* loader */}
+            {isUserLoading || !userData ? (
+              <>
+                <div className="animate-pulse bg-[#302e2ec0] rounded-full h-[160px] w-[160px]"></div>
+                <div className="animate-pulse bg-[#302e2ec0] rounded-sm h-8 w-[100px]"></div>
+                <div className="animate-pulse bg-[#302e2ec0] rounded-sm h-4 w-[220px]"></div>
+              </>
+            ) : (
+              <>
+                <a href={userData?.external_urls?.spotify}>
+                  <img
+                    loading="lazy"
+                    className="rounded-full h-[150px] w-[150px]"
+                    src={userData?.images[0]?.url}
+                    alt={`${userData?.display_name}'s profile`}
+                  />
+                </a>
+                <h1 className="text-center text-white text-[4rem] font-bold">
+                  {userData?.display_name}
+                </h1>
+                <div>
+                  <p className="text-center text-sm font-medium text-white">
+                    {userData?.followers?.total} Follower •{" "}
+                    {followingData?.artists?.total} Following •{" "}
+                    {playlistsData?.total} Playlists
+                  </p>
+                </div>
+              </>
+            )}
           </div>
         </div>
         {/* end of user profile part */}
@@ -81,11 +108,9 @@ const Profile = () => {
         {/* top artists and tracks */}
         <div className="my-6 flex flex-col">
           {/* top artists */}
-          <TopArtists
-            length={10}
-            render={true}
-          />
+          <TopArtists length={10} render={true} />
           {/* end of top artists */}
+
           {/* top tracks */}
           <div className="mb-8">
             <div className="flex justify-between items-center mb-4">
@@ -96,8 +121,8 @@ const Profile = () => {
                 Top tracks this month
               </h1>
               <Link
-                href="/top-artists"
-                className="text-[#cdc8c8] text-xs md:text-sm font-semibold"
+                href="/top-tracks"
+                className="text-[#cdc8c8] text-xs md:text-sm font-semibold hover:underline-offset-2 hover:underline"
               >
                 See more
               </Link>
@@ -106,12 +131,20 @@ const Profile = () => {
             {/* Tracks */}
             <div className="max-h-[200px] overflow-y-auto mb-8 md:mb-0">
               {/* tracks container */}
-              <div className="flex flex-col">
-                {/* track */}
-                {topTracks?.items.map((track, index) => (
-                  <Track track={track} key={index} />
-                ))}
-              </div>
+              {isTopTracksLoading || !topTracks ? (
+                <div className="flex flex-col gap-1">
+                  {[...new Array(5)].map((_, index) => (
+                    <TrackCardLoader key={index} />
+                  ))}
+                </div>
+              ) : (
+                <div className="flex flex-col">
+                  {/* track */}
+                  {topTracks?.items.map((track, index) => (
+                    <Track track={track} key={index} />
+                  ))}
+                </div>
+              )}
             </div>
           </div>
           {/* end of top tracks */}
@@ -129,12 +162,22 @@ const Profile = () => {
             {/* Track recos */}
             <div className="max-h-[200px] overflow-y-auto mb-8 md:mb-0">
               {/* track reco container */}
-              <div className="flex flex-col">
-                {/* track reco */}
-                {trackRecommendation?.tracks.map((track, index) => (
-                  <Track track={track} key={index} />
-                ))}
-              </div>
+
+              {isTrackRecoLoading || !trackRecommendation ? (
+                // loader
+                <div className="flex flex-col gap-1">
+                  {[...new Array(5)].map((_, index) => (
+                    <TrackCardLoader key={index} />
+                  ))}
+                </div>
+              ) : (
+                <div className="flex flex-col">
+                  {/* track reco */}
+                  {trackRecommendation?.tracks.map((track, index) => (
+                    <Track track={track} key={index} />
+                  ))}
+                </div>
+              )}
             </div>
           </div>
           {/* end of track recommendations */}

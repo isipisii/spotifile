@@ -5,14 +5,37 @@ import {
   useGetTopTracksOfAllTimeQuery,
 } from "@/services/spotify";
 import Track from "./Track";
+import TrackCardLoader from "./Loaders/TrackCardLoader";
+
 import { usePalette } from "@lauriys/react-palette";
 import { useState, useEffect } from "react";
 
 const TopTracks = ({ session }) => {
-  const { data: topTracksRecent, refetch: refetchTopTracksRecent } = useGetRecentTopTracksQuery({ length: 50 }, session?.accessToken && session);
-  const { data: topTracksLast6Months,  refetch: refetchTopTracksLast6Months } = useGetLast6MonthsTopTracksQuery({ length: 50 }, session?.accessToken && session);
-  const { data: topTracksOfAllTime,  refetch: refetchTopTracksOfAllTime } = useGetTopTracksOfAllTimeQuery({ length: 50 }, session?.accessToken && session);
- 
+  const {
+    data: topTracksRecent,
+    refetch: refetchTopTracksRecent,
+    isLoading: isRecentLoading,
+  } = useGetRecentTopTracksQuery(
+    { length: 50 },
+    session?.accessToken && session
+  );
+  const {
+    data: topTracksLast6Months,
+    refetch: refetchTopTracksLast6Months,
+    isLoading: isLast6MonthsLoading,
+  } = useGetLast6MonthsTopTracksQuery(
+    { length: 50 },
+    session?.accessToken && session
+  );
+  const {
+    data: topTracksOfAllTime,
+    refetch: refetchTopTracksOfAllTime,
+    isLoading: isAllTimeLoading,
+  } = useGetTopTracksOfAllTimeQuery(
+    { length: 50 },
+    session?.accessToken && session
+  );
+
   const tabItems = [
     {
       label: "All time",
@@ -30,19 +53,22 @@ const TopTracks = ({ session }) => {
       title: "Top Tracks this month",
     },
   ];
-  
+
   const [tabIndex, setTabIndex] = useState(0);
   const topTrackImage = tabItems[tabIndex].data?.items[0]?.album.images[0]?.url; // get the first track image
   const { data: color } = usePalette(topTrackImage); //extract color from image
 
-  // refetch data when session changes and accessToken is available
+  function refetchTopTracks() {
+    refetchTopTracksRecent();
+    refetchTopTracksLast6Months();
+    refetchTopTracksOfAllTime();
+  }
+
   useEffect(() => {
     if (session?.accessToken) {
-      refetchTopTracksRecent();
-      refetchTopTracksLast6Months();
-      refetchTopTracksOfAllTime();
+      refetchTopTracks();
     }
-  }, [session, refetchTopTracksRecent, refetchTopTracksLast6Months, refetchTopTracksOfAllTime]);
+  }, [session?.accessToken]);
 
   return (
     <section
@@ -74,12 +100,20 @@ const TopTracks = ({ session }) => {
         {/* Tracks */}
         {/* tracks container */}
         <div className="max-h-[550px] h-full overflow-y-auto mb-12 md:mb-0">
-          <div className="flex flex-col">
-            {/* track */}
-            {tabItems[tabIndex].data?.items.map((track, index) => (
-              <Track track={track} key={index} />
-            ))}
-          </div>
+          {tabItems[tabIndex].isLoading || !tabItems[tabIndex].data ? (
+            <div className="flex flex-col gap-1">
+              {[...new Array(20)].map((_, index) => (
+                <TrackCardLoader key={index} />
+              ))}
+            </div>
+          ) : (
+            <div className="flex flex-col">
+              {/* track */}
+              {tabItems[tabIndex].data?.items.map((track, index) => (
+                <Track track={track} key={index} />
+              ))}
+            </div>
+          )}
         </div>
       </div>
     </section>
