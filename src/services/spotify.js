@@ -83,6 +83,16 @@ export const spotifyApi = createApi({
     }),
     getRecentlyPlayed: builder.query({
       query: () => "/me/player/recently-played",
+    }),
+    // TODO
+    getArtist: builder.query({
+      query: (id) => `/artists/${id}`
+    }),
+    getArtistsAlbum: builder.query({
+      query: (id) => `/artists/${id}/albums`
+    }),
+    getArtistsTopTracks: builder.query({
+      query: (id) => `/artists/${id}/top-tracks`
     })
   }),
 });
@@ -101,4 +111,9 @@ export const {
   useGetTopArtistsOfAllTimeQuery,
   useGetRecentTopArtistsQuery,
   useGetTopArtistsLast6MonthsQuery,
+
+  useGetArtistQuery,
+  useGetArtistsAlbumQuery,
+  useGetArtistsTopTracksQuery,
+
 } = spotifyApi;
