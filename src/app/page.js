@@ -18,7 +18,7 @@ const Home = () => {
 
   return (
     <div className="w-full items-center justify-center">
-      <Profile />
+      <Profile session={session}/>
     </div>
   );
 };
