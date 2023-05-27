@@ -9,7 +9,7 @@ const Recent = () => {
   const { data: session } = useSession();
   dispatch(setAccessToken(session?.accessToken));
   
-  return <RecentlyPlayed session={session}/>;
+  return <RecentlyPlayed session={session} />;
 };
 
 export default Recent;
