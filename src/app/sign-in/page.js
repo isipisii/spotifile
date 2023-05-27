@@ -12,13 +12,19 @@ const SignIn = () => {
   }
 
   return (
-    <div className="h-[100vh] w-[100vw] bg-black flex items-center justify-center">
-      <button
-        onClick={() => signIn("spotify")}
-        className="font-semibold text-white rounded-full bg-green-600 py-3 px-6"
-      >
-        Sign in with Spotify
-      </button>
+    <div className="h-[100vh] w-[100vw] bg-[#121212] flex items-center justify-center">
+      <div className="flex items-center flex-col justify-center gap-12">
+        <div className="flex items-center gap-4 w-full">
+          <h1 className="text-green-500 font-bold text-dynamic">Spotifile</h1>
+          <img src="/images/spotifylogo.png" alt="logo" className="w-[60px] md:w-[90px]"/>
+        </div>
+        <button
+          onClick={() => signIn("spotify")}
+          className="font-semibold text-white text-sm md:text-base rounded-full hover:bg-green-500 bg-green-600 py-3 px-6"
+        >
+          Sign in with Spotify
+        </button>
+      </div>
     </div>
   );
 };
