@@ -13,7 +13,7 @@ const NavBar = () => {
 
   return (
     <>
-      {session && (
+      {pathname !== "/sign-in" && (
         <nav
           className="fixed from-[#000000c3] to-[#000000] bg-gradient-to-t w-[100vw] bottom-0 flex-start 
           items-center justify-center
