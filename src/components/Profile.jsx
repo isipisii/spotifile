@@ -12,6 +12,7 @@ import { usePalette } from "@lauriys/react-palette";
 import TopArtists from "./TopArtists";
 import Track from "./Track";
 import TrackCardLoader from "./Loaders/TrackCardLoader";
+import { useRouter } from "next/navigation";
 
 const Profile = ({ session }) => {
   const { data: userData, isLoading: isUserLoading } = useGetUserQuery(
@@ -39,6 +40,7 @@ const Profile = ({ session }) => {
       session?.accesToken && session
     );
   const { data: color } = usePalette(userData?.images[0]?.url);
+  const router = useRouter();
 
   // to get the ids of the top tracks and able to get the track recommendations
   function generateTopTrackIds() {
@@ -47,6 +49,11 @@ const Profile = ({ session }) => {
       topTrackIds.push(topTracks?.items[i]?.id);
     }
     return topTrackIds;
+  }
+
+  async function handleLogout(){
+    await signOut();
+    router.push("/sign-in");
   }
 
   return (
@@ -63,7 +70,7 @@ const Profile = ({ session }) => {
           <h1 className="text-white font-bold text-[1.6rem]">Profile</h1>
           <button
             className="font-medium text-white text-sm rounded-full py-2 px-5 transition-all duration-300 hover:text-black hover:bg-white border border-[#dad4d4]"
-            onClick={signOut}
+            onClick={handleLogout}
           >
             Log out
           </button>
@@ -86,10 +93,9 @@ const Profile = ({ session }) => {
                     loading="lazy"
                     className="rounded-full h-[150px] w-[150px]"
                     src={userData?.images[0]?.url}
-                    alt={`${userData?.display_name}'s profile`}
                   />
                 </a>
-                <h1 className="text-center text-white text-[4rem] font-bold">
+                <h1 className="text-center text-white text-[3rem] md:text-[4rem] font-bold">
                   {userData?.display_name}
                 </h1>
                 <div>
