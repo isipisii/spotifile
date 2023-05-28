@@ -4,26 +4,26 @@ export const spotifyApi = createApi({
   reducerPath: "spotifyApi",
   baseQuery: fetchBaseQuery({
     baseUrl: "https://api.spotify.com/v1",
-    prepareHeaders: (headers, { getState }) => {  
-      const token = getState().auth.accessToken
+    prepareHeaders: (headers, { getState }) => {
+      const token = getState().auth.accessToken;
       if (token) {
-        headers.set('Authorization', `Bearer ${token}`)
+        headers.set("Authorization", `Bearer ${token}`);
       }
-      return headers
+      return headers;
     },
   }),
   endpoints: (builder) => ({
     getUser: builder.query({
-      query: () => "/me"
+      query: () => "/me",
     }),
     getFollowing: builder.query({
-      query: () =>"/me/following?type=artist"
+      query: () => "/me/following?type=artist",
     }),
     getRecentlyPlayed: builder.query({
-      query: () => "/me/player/recently-played"
+      query: () => "/me/player/recently-played",
     }),
     getPlaylists: builder.query({
-      query: () => "/me/playlists"
+      query: () => "/me/playlists",
     }),
     getTopArtistsOfAllTime: builder.query({
       query: (args) => {
@@ -77,7 +77,9 @@ export const spotifyApi = createApi({
       query: (args) => {
         const { length, topTrackIds } = args;
         return {
-          url: `/recommendations?limit=${length}&seed_tracks=${topTrackIds.join(",")}`,
+          url: `/recommendations?limit=${length}&seed_tracks=${topTrackIds.join(
+            ","
+          )}`,
         };
       },
     }),
@@ -86,14 +88,19 @@ export const spotifyApi = createApi({
     }),
     // TODO
     getArtist: builder.query({
-      query: (id) => `/artists/${id}`
+      query: (id) => `/artists/${id}`,
     }),
     getArtistsAlbum: builder.query({
-      query: (id) => `/artists/${id}/albums`
+      query: (id) => `/artists/${id}/albums`,
     }),
     getArtistsTopTracks: builder.query({
-      query: (id) => `/artists/${id}/top-tracks`
-    })
+      query: (args) => {
+        const { id, country } = args;
+        return {
+          url: `/artists/${id}/top-tracks?country=${country}`,
+        };
+      },
+    }),
   }),
 });
 
@@ -115,5 +122,4 @@ export const {
   useGetArtistQuery,
   useGetArtistsAlbumQuery,
   useGetArtistsTopTracksQuery,
-
 } = spotifyApi;
