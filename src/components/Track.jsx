@@ -9,7 +9,6 @@ const Track = ({ track }) => {
           <img
             loading="lazy"
             src={track?.album?.images[0]?.url}
-            alt="album image"
             className="w-[45px] h-[45px] sm:w-[50px] md:h-[50px] rounded-sm"
           />
           <div>

@@ -39,17 +39,16 @@ const Playlists = ({ session }) => {
             {playLists?.items.map((playList, index) => (
               <div
                 key={index}
-                className="bg-[#0000002d] flex rounded-[7px] flex-col gap-2 items-center max-w-[240px] p-4 hover:bg-[#3534346f] "
+                className="bg-[#0000002d] flex rounded-[7px] flex-col gap-2 max-w-[250px] p-5 hover:bg-[#3534346f] "
               >
                 <img
                   loading="lazy"
-                  className="object-fit h-[160px] w-[160px] sm:h-[180px] sm:w-[180px] rounded-[4px]"
+                  className="rounded-[4px]"
                   src={playList?.images[0]?.url}
-                  alt="playlist image"
                 />
-                <h3 className="text-white text-center text-[.8rem]">
+                <h2 className="text-white font-semibold text-left text-sm truncate w-[100px] sm:w-[150px]">
                   {playList?.name}
-                </h3>
+                </h2>
               </div>
             ))}
           </div>

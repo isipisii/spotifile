@@ -31,7 +31,7 @@ const RecentlyPlayed = ({ session }) => {
           </h1>
         </div>
         {/* Tracks */}
-        <div className="max-h-[750px] md:max-h-[550px] h-full overflow-y-auto mb-12 md:mb-0">
+        <div className="max-h-[600px] h-full overflow-y-auto mb-12 md:mb-0">
           {/* tracks container */}
           <div className="flex flex-col">
             {/* track */}
