@@ -1,3 +1,5 @@
+"use client"
+
 const ArtistCardLoader = () => {
   return (
     <div className="bg-[#0000002d] flex rounded-[7px] flex-col gap-3 items-center max-w-[250px] p-5 ">
