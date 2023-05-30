@@ -10,7 +10,7 @@ const ArtistPage = () => {
   dispatch(setAccessToken(session?.accessToken));
 
   return (
-    <ArtistDetails />
+    <ArtistDetails session={session}/>
   );
 };
 
