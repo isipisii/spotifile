@@ -7,7 +7,7 @@ const SignIn = () => {
   const { data: session } = useSession();
   const router = useRouter();
 
-  if (session) {
+  if (session?.accessToken && session) {
     router.push("/");
   }
 
