@@ -48,7 +48,7 @@ export async function getRefreshedAccessToken(token) {
 }
 
 const handler = NextAuth({
-  // Configure one or more authentication providers
+  // connfigure spotify provider
   providers: [
     SpotifyProvider({
       clientId: process.env.SPOTIFY_CLIENT_ID,
