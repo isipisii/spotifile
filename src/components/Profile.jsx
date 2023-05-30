@@ -13,25 +13,26 @@ import TopArtists from "./TopArtists";
 import Track from "./Track";
 import TrackCardLoader from "./Loaders/TrackCardLoader";
 import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 
 const Profile = ({ session }) => {
-  const { data: userData, isLoading: isUserLoading } = useGetUserQuery(
+  const { data: userData, isLoading: isUserLoading} = useGetUserQuery(
     session?.accesToken && session
   );
-  const { data: followingData } = useGetFollowingQuery(
+  const { data: followingData, refetch: refetchFollowing } = useGetFollowingQuery(
     session?.accesToken && session
   );
-  const { data: playlistsData } = useGetPlaylistsQuery(
+  const { data: playlistsData, refetch: refetchPlaylists } = useGetPlaylistsQuery(
     session?.accesToken && session
   );
-  const { data: topTracks, isLoading: isTopTracksLoading } =
+  const { data: topTracks, isLoading: isTopTracksLoading, refetch: refetchTracks } =
     useGetRecentTopTracksQuery(
       {
         length: 10,
       },
       session?.accesToken && session
     );
-  const { data: trackRecommendation, isLoading: isTrackRecoLoading } =
+  const { data: trackRecommendation, isLoading: isTrackRecoLoading, refetch: refetchTrackReco } =
     useGetTrackRecommendationsQuery(
       {
         topTrackIds: generateTopTrackIds(),
@@ -50,6 +51,14 @@ const Profile = ({ session }) => {
     }
     return topTrackIds;
   }
+
+  // refetch
+  useEffect(()=> {
+      refetchTracks()
+      refetchFollowing()
+      refetchTrackReco()
+      refetchTracks()
+  }, [])
 
   async function handleLogout(){
     await signOut();
