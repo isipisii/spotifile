@@ -4,31 +4,41 @@ import {
   useGetArtistsAlbumQuery,
   useGetArtistsTopTracksQuery,
   useGetUserQuery,
+  useGetCheckIfUserFollowsQuery,
+  useFollowArtistMutation,
+  useUnfollowArtistMutation,
 } from "@/services/spotify";
 import { useParams } from "next/navigation";
 import { usePalette } from "@lauriys/react-palette";
-import { useCallback, useState } from "react";
+import { useCallback, useState, useEffect } from "react";
 import Track from "./Track";
 import TrackCardLoader from "./Loaders/TrackCardLoader";
 import AlbumCard from "./AlbumCard";
 
-const ArtistDetails = () => {
+const ArtistDetails = ({ session }) => {
   const params = useParams();
   const { data: userData } = useGetUserQuery();
-  const { data: artist } = useGetArtistQuery(params.id);
   const { data: artistAlbums } = useGetArtistsAlbumQuery(params.id);
   const { data: artistTopTracks, isLoading: isTopTracksLoading } =
-    useGetArtistsTopTracksQuery({
-      id: params.id,
-      country: userData?.country,
-    });
+    useGetArtistsTopTracksQuery(
+      {
+        id: params.id,
+        country: userData?.country,
+      },
+      session && session?.accessToken
+    );
+  const { data: isFollowing, refetch } = useGetCheckIfUserFollowsQuery({
+    id: params.id,
+  });
+  const { data: artist } = useGetArtistQuery(params.id);
+  const [followArtist] = useFollowArtistMutation();
+  const [unfollowArtist] = useUnfollowArtistMutation();
+
   const artistImage = artist?.images[0]?.url;
-  const { data: color } = usePalette(artistImage); //extracted color
+  const { data: color } = usePalette(artistImage); //extract color
   const [albumCount, setAlbumCount] = useState(10);
 
-  console.log(artistAlbums);
-
-  function handleSeeMore() {
+  function handleSeeMore() {  
     setAlbumCount((prev) => prev + 10);
   }
 
@@ -56,6 +66,24 @@ const ArtistDetails = () => {
     [params.id]
   );
 
+  useEffect(() => {
+    if (session?.accessToken) {
+      refetch();
+    }
+  }, [session, refetch]);
+
+  function handleFollowArtist(){
+    if (isFollowing && isFollowing[0]) {
+      unfollowArtist(params.id).then(() => {
+        refetch();
+      });
+    } else {
+      followArtist(params.id).then(() => { 
+        refetch();
+      });
+    }
+  };
+
   return (
     <section className="flex relative items-center justify-center">
       <div className="w-full max-w-[1200px] md:w-[92%] md:ml-[100px] flex flex-col gap-9 p-8">
@@ -80,9 +108,15 @@ const ArtistDetails = () => {
               Followers:{" "}
               <span>{artist && addCommas(artist?.followers?.total)}</span>
             </p>
-            <p className="text-[#ffffffa7] text-sm">
+            <p className="text-[#ffffffa7] text-sm mb-4">
               Popularity: <span>{artist && artist?.popularity}%</span>
             </p>
+            <button
+              onClick={handleFollowArtist}
+              className={`text-white ${isFollowing && isFollowing[0] ? "border border-white font-semibold" : "border border-[#a8a5a5] hover:border-white"} font-medium text-sm py-2 px-8 md:py-2 md:px-10 `}
+            >
+              {isFollowing && isFollowing[0] ? "Following" : "Follow"}
+            </button>
           </div>
         </div>
 
@@ -120,13 +154,9 @@ const ArtistDetails = () => {
         {/* Albums */}
         <div className="mt-4 mb-14 md:mb-0">
           <div className="flex justify-between items-center mb-4">
-            <h1
-              className="text-white font-semibold
-                text-[1.1rem] md:text-[1.3rem]"
-            >
+            <h1 className="text-white font-semiboldtext-[1.1rem] md:text-[1.3rem]">
               Albums
             </h1>
-
             {albumCount > 10 ? (
               <p
                 onClick={handleSeeLess}
