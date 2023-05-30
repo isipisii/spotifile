@@ -109,35 +109,42 @@ export const spotifyApi = createApi({
       },
     }),
     followArtist: builder.mutation({
-      query: (artistId) => ({
-        url: `me/following?type=artist&ids=${artistId}`,
+      query: (id) => ({
+        url: `me/following?type=artist&ids=${id}`,
         method: "PUT",
       }),
     }),
     unfollowArtist: builder.mutation({
-      query: (artistId) => ({
-        url: `me/following?type=artist&ids=${artistId}`,
+      query: (id) => ({
+        url: `me/following?type=artist&ids=${id}`,
         method: "DELETE",
       }),
+    }),
+    getRelatedArtists: builder.query({
+      query: (id) => `/artists/${id}/related-artists`,
     }),
   }),
 });
 
 export const {
+  // for profile
   useGetUserQuery,
   useGetFollowingQuery,
   useGetPlaylistsQuery,
   useGetRecentlyPlayedQuery,
 
+  // top tracks
   useGetRecentTopTracksQuery,
   useGetTopTracksOfAllTimeQuery,
   useGetLast6MonthsTopTracksQuery,
   useGetTrackRecommendationsQuery,
 
+  // top artists
   useGetTopArtistsOfAllTimeQuery,
   useGetRecentTopArtistsQuery,
   useGetTopArtistsLast6MonthsQuery,
 
+  // artist
   useGetArtistQuery,
   useGetArtistsAlbumQuery,
   useGetArtistsTopTracksQuery,
@@ -145,4 +152,6 @@ export const {
   useGetCheckIfUserFollowsQuery,
   useFollowArtistMutation,
   useUnfollowArtistMutation,
+  useGetRelatedArtistsQuery
+
 } = spotifyApi;

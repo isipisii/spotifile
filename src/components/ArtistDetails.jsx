@@ -7,6 +7,7 @@ import {
   useGetCheckIfUserFollowsQuery,
   useFollowArtistMutation,
   useUnfollowArtistMutation,
+  useGetRelatedArtistsQuery,
 } from "@/services/spotify";
 import { useParams } from "next/navigation";
 import { usePalette } from "@lauriys/react-palette";
@@ -33,12 +34,14 @@ const ArtistDetails = ({ session }) => {
   const { data: artist } = useGetArtistQuery(params.id);
   const [followArtist] = useFollowArtistMutation();
   const [unfollowArtist] = useUnfollowArtistMutation();
-
+  const { data: relatedArtists } = useGetRelatedArtistsQuery(params.id)
   const artistImage = artist?.images[0]?.url;
   const { data: color } = usePalette(artistImage); //extract color
   const [albumCount, setAlbumCount] = useState(10);
 
-  function handleSeeMore() {  
+  console.log(relatedArtists)
+
+  function handleSeeMore() {
     setAlbumCount((prev) => prev + 10);
   }
 
@@ -72,17 +75,18 @@ const ArtistDetails = ({ session }) => {
     }
   }, [session, refetch]);
 
-  function handleFollowArtist(){
+
+  function handleFollowArtist() {
     if (isFollowing && isFollowing[0]) {
       unfollowArtist(params.id).then(() => {
         refetch();
       });
     } else {
-      followArtist(params.id).then(() => { 
+      followArtist(params.id).then(() => {
         refetch();
       });
     }
-  };
+  }
 
   return (
     <section className="flex relative items-center justify-center">
@@ -113,7 +117,11 @@ const ArtistDetails = ({ session }) => {
             </p>
             <button
               onClick={handleFollowArtist}
-              className={`text-white ${isFollowing && isFollowing[0] ? "border border-white font-semibold" : "border border-[#a8a5a5] hover:border-white"} font-medium text-sm py-2 px-8 md:py-2 md:px-10 `}
+              className={`text-white ${
+                isFollowing && isFollowing[0]
+                  ? "border-white font-semibold"
+                  : "border-[#817d7d] hover:border-white"
+              } font-medium text-sm py-2 px-8 md:py-2 md:px-10 border-[2px] rounded-full`}
             >
               {isFollowing && isFollowing[0] ? "Following" : "Follow"}
             </button>
@@ -154,7 +162,10 @@ const ArtistDetails = ({ session }) => {
         {/* Albums */}
         <div className="mt-4 mb-14 md:mb-0">
           <div className="flex justify-between items-center mb-4">
-            <h1 className="text-white font-semiboldtext-[1.1rem] md:text-[1.3rem]">
+            <h1
+              className="text-white font-semibold
+              text-[1.1rem] md:text-[1.3rem]"
+            >
               Albums
             </h1>
             {albumCount > 10 ? (
