@@ -12,35 +12,44 @@ import {
 import { useParams } from "next/navigation";
 import { usePalette } from "@lauriys/react-palette";
 import { useCallback, useState, useEffect } from "react";
+
 import Track from "./Track";
 import TrackCardLoader from "./Loaders/TrackCardLoader";
 import AlbumCard from "./AlbumCard";
+import PlaylistCardLoader from "./Loaders/PlaylistCardLoader";
+import ArtistCard from "./ArtistCard";
 
 const ArtistDetails = ({ session }) => {
   const params = useParams();
-  const { data: userData } = useGetUserQuery();
-  const { data: artistAlbums } = useGetArtistsAlbumQuery(params.id);
-  const { data: artistTopTracks, isLoading: isTopTracksLoading } =
-    useGetArtistsTopTracksQuery(
-      {
-        id: params.id,
-        country: userData?.country,
-      },
-      session && session?.accessToken
-    );
-  const { data: isFollowing, refetch } = useGetCheckIfUserFollowsQuery({
+  const { data: userData, refetch: refetchUserData } = useGetUserQuery(
+    session?.accessToken && session
+  );
+  const { data: artistAlbums, isLoading: isArtistAlbumLoading } =
+    useGetArtistsAlbumQuery(params.id);
+  const {
+    data: artistTopTracks,
+    isLoading: isTopTracksLoading,
+    refetch: refetchTopTracks,
+  } = useGetArtistsTopTracksQuery({
     id: params.id,
+    country: userData?.country,
   });
+  const { data: isFollowing, refetch: refetchIsFollowing } =
+    useGetCheckIfUserFollowsQuery({
+      id: params.id,
+    });
+  const { data: relatedArtists } = useGetRelatedArtistsQuery(params.id);
+
+  // mutations
   const { data: artist } = useGetArtistQuery(params.id);
   const [followArtist] = useFollowArtistMutation();
   const [unfollowArtist] = useUnfollowArtistMutation();
-  const { data: relatedArtists } = useGetRelatedArtistsQuery(params.id)
+
   const artistImage = artist?.images[0]?.url;
   const { data: color } = usePalette(artistImage); //extract color
   const [albumCount, setAlbumCount] = useState(10);
 
-  console.log(relatedArtists)
-
+  console.log(relatedArtists);
   function handleSeeMore() {
     setAlbumCount((prev) => prev + 10);
   }
@@ -49,7 +58,7 @@ const ArtistDetails = ({ session }) => {
     setAlbumCount((prev) => prev - 10);
   }
 
-  // to add commas to the followers count
+  // add commas to the followers count
   const addCommas = useCallback(
     (num) => {
       let chars = num.toString().split("");
@@ -69,21 +78,23 @@ const ArtistDetails = ({ session }) => {
     [params.id]
   );
 
+  // refetch the isfollowing
   useEffect(() => {
     if (session?.accessToken) {
-      refetch();
+      refetchUserData();
+      refetchIsFollowing();
+      refetchTopTracks();
     }
-  }, [session, refetch]);
-
+  }, [session]);
 
   function handleFollowArtist() {
     if (isFollowing && isFollowing[0]) {
       unfollowArtist(params.id).then(() => {
-        refetch();
+        refetchIsFollowing();
       });
     } else {
       followArtist(params.id).then(() => {
-        refetch();
+        refetchIsFollowing();
       });
     }
   }
@@ -128,6 +139,7 @@ const ArtistDetails = ({ session }) => {
           </div>
         </div>
 
+        {/*Popular tracks  */}
         <div className="mt-4">
           <div className="flex justify-between items-center mb-4">
             <h1
@@ -159,6 +171,18 @@ const ArtistDetails = ({ session }) => {
         </div>
         {/* end of top tracks */}
 
+        {/* Related artists */}
+        <div className="my-4">
+          <h1 className="text-white font-semibold text-[1.1rem] md:text-[1.3rem] mb-4">
+            Artists you may like
+          </h1>
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-5 gap-4">
+            {relatedArtists?.artists.slice(0, 5).map((artist, index) => (
+              <ArtistCard artist={artist} key={index} index={index} />
+            ))}
+          </div>
+        </div>
+
         {/* Albums */}
         <div className="mt-4 mb-14 md:mb-0">
           <div className="flex justify-between items-center mb-4">
@@ -184,11 +208,20 @@ const ArtistDetails = ({ session }) => {
               </p>
             )}
           </div>
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-5 gap-4">
-            {artistAlbums?.items.slice(0, albumCount).map((album, index) => (
-              <AlbumCard album={album} key={index} />
-            ))}
-          </div>
+
+          {isArtistAlbumLoading || !artistAlbums ? (
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-5 gap-4">
+              {[...new Array(10)].map((_, index) => (
+                <PlaylistCardLoader key={index} />
+              ))}
+            </div>
+          ) : (
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-5 gap-4">
+              {artistAlbums?.items.slice(0, albumCount).map((album, index) => (
+                <AlbumCard album={album} key={index} />
+              ))}
+            </div>
+          )}
         </div>
       </div>
     </section>
