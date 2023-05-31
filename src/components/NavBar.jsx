@@ -15,7 +15,7 @@ const NavBar = () => {
     <>
       {pathname !== "/sign-in" && (
         <nav
-          className="fixed from-[#000000c3] to-[#000000] bg-gradient-to-t w-[100vw] bottom-0 flex-start 
+          className="fixed from-[#0000009a] to-[#000000] bg-gradient-to-b w-[100vw] bottom-0 flex-start 
           items-center justify-center
           md:left-0 md:h-[100vh] md:w-auto z-10"
         >
