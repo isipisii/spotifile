@@ -50,6 +50,7 @@ const ArtistDetails = ({ session }) => {
   const [albumCount, setAlbumCount] = useState(10);
 
   console.log(relatedArtists);
+
   function handleSeeMore() {
     setAlbumCount((prev) => prev + 10);
   }
