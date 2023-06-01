@@ -123,6 +123,9 @@ export const spotifyApi = createApi({
     getRelatedArtists: builder.query({
       query: (id) => `/artists/${id}/related-artists`,
     }),
+    getPlaylistDetails: builder.query({
+      query: (id) => `/playlists/${id}`,
+    }),
   }),
 });
 
@@ -148,10 +151,12 @@ export const {
   useGetArtistQuery,
   useGetArtistsAlbumQuery,
   useGetArtistsTopTracksQuery,
-
   useGetCheckIfUserFollowsQuery,
   useFollowArtistMutation,
   useUnfollowArtistMutation,
-  useGetRelatedArtistsQuery
+  useGetRelatedArtistsQuery,
 
+  // playlist
+  useGetPlaylistDetailsQuery
+  
 } = spotifyApi;
