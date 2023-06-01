@@ -2,6 +2,7 @@
 import { useGetPlaylistsQuery } from "@/services/spotify";
 import { useEffect } from "react";
 import PlaylistCardLoader from "./Loaders/PlaylistCardLoader";
+import Link from "next/link";
 
 const Playlists = ({ session }) => {
   const {
@@ -27,8 +28,7 @@ const Playlists = ({ session }) => {
         </div>
         {/* Playlist */}
         {/* playlist container */}
-        {isPlayListsLoading || !playLists ? 
-        (
+        {isPlayListsLoading || !playLists ? (
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-4 gap-4 mb-10">
             {[...new Array(5)].map((_, index) => (
               <PlaylistCardLoader key={index} />
@@ -37,19 +37,21 @@ const Playlists = ({ session }) => {
         ) : (
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-4 gap-4 mb-10">
             {playLists?.items.map((playList, index) => (
-              <div
-                key={index}
-                className="bg-[#0000002d] flex rounded-[7px] flex-col gap-2 max-w-[250px] p-5 hover:bg-[#3534346f] "
-              >
-                <img
-                  loading="lazy"
-                  className="rounded-[4px]"
-                  src={playList?.images[0]?.url}
-                />
-                <h2 className="text-white font-semibold text-left text-xs sm:text-sm truncate w-[100px] xs:w-[120px] sm:w-[150px] md:w-[200px]">
-                  {playList?.name}
-                </h2>
-              </div>
+              <Link href={`/playlist/${playList?.id}`}>
+                <div
+                  key={index}
+                  className="bg-[#0000002d] flex rounded-[7px] flex-col gap-2 max-w-[250px] p-5 hover:bg-[#3534346f] "
+                >
+                  <img
+                    loading="lazy"
+                    className="rounded-[4px]"
+                    src={playList?.images[0]?.url}
+                  />
+                  <h2 className="text-white font-semibold text-left text-xs sm:text-sm truncate w-[100px] xs:w-[120px] sm:w-[150px] md:w-[200px]">
+                    {playList?.name}
+                  </h2>
+                </div>
+              </Link>
             ))}
           </div>
         )}
