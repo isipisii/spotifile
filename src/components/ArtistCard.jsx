@@ -16,7 +16,7 @@ const ArtistCard = ({ artist, index }) => {
           {artist?.name}
         </h3>
         <p className="text-[#cdc8c8] text-[.7rem] sm:text-xs md:text-sm">
-          {artist?.type.charAt(0).toUpperCase() + artist?.type.slice(1)}
+          {artist?.type.charAt(0).toUpperCase().concat(artist?.type.slice(1))}
         </p>
       </div>
       </Link>
