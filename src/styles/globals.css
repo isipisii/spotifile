@@ -34,6 +34,18 @@
     z-index: -10;
   }
 
+  .playlist-background {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 900px;
+    left: 0;
+    top: 0;
+    background-image: linear-gradient(to bottom, var(--from-color), var(--via-color), transparent);
+    z-index: -10;
+  }
+
+
 
 
 

@@ -49,8 +49,6 @@ const ArtistDetails = ({ session }) => {
   const { data: color } = usePalette(artistImage); //extract color
   const [albumCount, setAlbumCount] = useState(10);
 
-  console.log(relatedArtists);
-
   function handleSeeMore() {
     setAlbumCount((prev) => prev + 10);
   }
@@ -110,11 +108,11 @@ const ArtistDetails = ({ session }) => {
             "--via-color": "#121212d1",
           }}
         />
-        <div className="flex flex-col md:flex-row gap-4 md:gap-8 mt-8">
+        <div className="flex flex-col md:items-end md:flex-row gap-4 md:gap-8 mt-8">
           <img
             src={artistImage}
             alt="artist"
-            className=" object-cover h-[200px] w-[200px] md:h-[250px] md:w-[250px] shadow-xl shadow-[#0202024d]"
+            className=" object-cover h-[200px] w-[200px] md:h-[250px] md:w-[250px] shadow-xl rounded-full shadow-[#0202024d]"
           />
           <div>
             <h1 className="text-white font-[800] text-[2.5rem] sm:text-[3.5rem] lg:text-[4.5rem] text-shadow-md">
@@ -164,7 +162,7 @@ const ArtistDetails = ({ session }) => {
               <div className="flex flex-col">
                 {/* track */}
                 {artistTopTracks?.tracks.map((track, index) => (
-                  <Track track={track} key={index} />
+                  <Track track={track} key={index} index={index} />
                 ))}
               </div>
             )}
@@ -193,21 +191,21 @@ const ArtistDetails = ({ session }) => {
             >
               Albums
             </h1>
-            {albumCount > 10 ? (
-              <p
-                onClick={handleSeeLess}
-                className="text-[#cdc8c8] cursor-pointer text-xs md:text-sm font-semibold hover:underline-offset-2 hover:underline"
-              >
-                See less
-              </p>
-            ) : (
-              <p
-                onClick={handleSeeMore}
-                className="text-[#cdc8c8] cursor-pointer text-xs md:text-sm font-semibold hover:underline-offset-2 hover:underline"
-              >
-                See more
-              </p>
-            )}
+                {albumCount > 10 ? (
+                  <p
+                    onClick={handleSeeLess}
+                    className="text-[#cdc8c8] cursor-pointer text-xs md:text-sm font-semibold hover:underline-offset-2 hover:underline"
+                  >
+                    See less
+                  </p>
+                ) : (
+                  <p
+                    onClick={handleSeeMore}
+                    className="text-[#cdc8c8] cursor-pointer text-xs md:text-sm font-semibold hover:underline-offset-2 hover:underline"
+                  >
+                    See more
+                  </p>
+                )}
           </div>
 
           {isArtistAlbumLoading || !artistAlbums ? (
