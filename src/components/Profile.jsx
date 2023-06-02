@@ -16,30 +16,34 @@ import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 
 const Profile = ({ session }) => {
-  const { data: userData, isLoading: isUserLoading} = useGetUserQuery(
+  const { data: userData, isLoading: isUserLoading } = useGetUserQuery(
     session?.accesToken && session
   );
-  const { data: followingData, refetch: refetchFollowing } = useGetFollowingQuery(
+  const { data: followingData, refetch: refetchFollowing } =
+    useGetFollowingQuery(session?.accesToken && session);
+  const { data: playlistsData, refetch: refetchPlaylists } =
+    useGetPlaylistsQuery(session?.accesToken && session);
+  const {
+    data: topTracks,
+    isLoading: isTopTracksLoading,
+    refetch: refetchTracks,
+  } = useGetRecentTopTracksQuery(
+    {
+      length: 10,
+    },
     session?.accesToken && session
   );
-  const { data: playlistsData, refetch: refetchPlaylists } = useGetPlaylistsQuery(
+  const {
+    data: trackRecommendation,
+    isLoading: isTrackRecoLoading,
+    refetch: refetchTrackReco,
+  } = useGetTrackRecommendationsQuery(
+    {
+      topTrackIds: generateTopTrackIds(),
+      length: 10,
+    },
     session?.accesToken && session
   );
-  const { data: topTracks, isLoading: isTopTracksLoading, refetch: refetchTracks } =
-    useGetRecentTopTracksQuery(
-      {
-        length: 10,
-      },
-      session?.accesToken && session
-    );
-  const { data: trackRecommendation, isLoading: isTrackRecoLoading, refetch: refetchTrackReco } =
-    useGetTrackRecommendationsQuery(
-      {
-        topTrackIds: generateTopTrackIds(),
-        length: 10,
-      },
-      session?.accesToken && session
-    );
   const { data: color } = usePalette(userData?.images[0]?.url);
   const router = useRouter();
 
@@ -53,14 +57,14 @@ const Profile = ({ session }) => {
   }
 
   // refetch
-  useEffect(()=> {
-      refetchTracks()
-      refetchFollowing()
-      refetchTrackReco()
-      refetchTracks()
-  }, [])
+  useEffect(() => {
+    refetchTracks();
+    refetchFollowing();
+    refetchTrackReco();
+    refetchTracks();
+  }, []);
 
-  async function handleLogout(){
+  async function handleLogout() {
     await signOut();
     router.push("/sign-in");
   }
@@ -156,7 +160,12 @@ const Profile = ({ session }) => {
                 <div className="flex flex-col">
                   {/* track */}
                   {topTracks?.items.map((track, index) => (
-                    <Track track={track} key={index} />
+                    <Track
+                      track={track}
+                      key={index}
+                      index={index}
+                      renderCount={true}
+                    />
                   ))}
                 </div>
               )}
@@ -189,7 +198,12 @@ const Profile = ({ session }) => {
                 <div className="flex flex-col">
                   {/* track reco */}
                   {trackRecommendation?.tracks.map((track, index) => (
-                    <Track track={track} key={index} />
+                    <Track
+                      track={track}
+                      key={index}
+                      index={index}
+                      renderCount={true}
+                    />
                   ))}
                 </div>
               )}

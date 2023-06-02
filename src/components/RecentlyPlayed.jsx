@@ -36,7 +36,7 @@ const RecentlyPlayed = ({ session }) => {
           <div className="flex flex-col">
             {/* track */}
             {recentlyPlayed?.items.map((track, index) => (
-              <Track track={track?.track} key={index} />
+              <Track track={track?.track} key={index} renderCount={false}/>
             ))}
           </div>
         </div>

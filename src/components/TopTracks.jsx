@@ -110,7 +110,7 @@ const TopTracks = ({ session }) => {
             <div className="flex flex-col">
               {/* track */}
               {tabItems[tabIndex].data?.items.map((track, index) => (
-                <Track track={track} key={index} />
+                <Track track={track} key={index} index={index} />
               ))}
             </div>
           )}
