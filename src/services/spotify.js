@@ -126,6 +126,9 @@ export const spotifyApi = createApi({
     getPlaylistDetails: builder.query({
       query: (id) => `/playlists/${id}`,
     }),
+    getUserById: builder.query({
+       query: (id) => `/users/${id}`
+    })
   }),
 });
 
@@ -157,6 +160,6 @@ export const {
   useGetRelatedArtistsQuery,
 
   // playlist
-  useGetPlaylistDetailsQuery
-  
+  useGetPlaylistDetailsQuery,
+  useGetUserByIdQuery
 } = spotifyApi;
