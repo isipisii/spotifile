@@ -191,21 +191,21 @@ const ArtistDetails = ({ session }) => {
             >
               Albums
             </h1>
-                {albumCount > 10 ? (
-                  <p
-                    onClick={handleSeeLess}
-                    className="text-[#cdc8c8] cursor-pointer text-xs md:text-sm font-semibold hover:underline-offset-2 hover:underline"
-                  >
-                    See less
-                  </p>
-                ) : (
-                  <p
-                    onClick={handleSeeMore}
-                    className="text-[#cdc8c8] cursor-pointer text-xs md:text-sm font-semibold hover:underline-offset-2 hover:underline"
-                  >
-                    See more
-                  </p>
-                )}
+            {albumCount > 10 ? (
+              <p
+                onClick={handleSeeLess}
+                className="text-[#cdc8c8] cursor-pointer text-xs md:text-sm font-semibold hover:underline-offset-2 hover:underline"
+              >
+                See less
+              </p>
+            ) : (
+              <p
+                onClick={handleSeeMore}
+                className="text-[#cdc8c8] cursor-pointer text-xs md:text-sm font-semibold hover:underline-offset-2 hover:underline"
+              >
+                See more
+              </p>
+            )}
           </div>
 
           {isArtistAlbumLoading || !artistAlbums ? (

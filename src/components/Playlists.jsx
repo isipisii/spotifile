@@ -29,13 +29,13 @@ const Playlists = ({ session }) => {
         {/* Playlist */}
         {/* playlist container */}
         {isPlayListsLoading || !playLists ? (
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-4 gap-4 mb-10">
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-4 gap-4 mb-12">
             {[...new Array(5)].map((_, index) => (
               <PlaylistCardLoader key={index} />
             ))}
           </div>
         ) : (
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-4 gap-4 mb-10">
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-4 gap-4 mb-12">
             {playLists?.items.map((playList, index) => (
               <Link href={`/playlist/${playList?.id}`}>
                 <div

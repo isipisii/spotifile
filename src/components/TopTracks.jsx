@@ -41,16 +41,19 @@ const TopTracks = ({ session }) => {
       label: "All time",
       data: topTracksOfAllTime,
       title: "Top Tracks of all time",
+      isLoading: isAllTimeLoading
     },
     {
       label: "Last 6 months",
       data: topTracksLast6Months,
       title: "Top Tracks last 6 months",
+      isLoading: isLast6MonthsLoading
     },
     {
       label: "This month",
       data: topTracksRecent,
       title: "Top Tracks this month",
+      isLoading: isRecentLoading
     },
   ];
 
@@ -99,7 +102,7 @@ const TopTracks = ({ session }) => {
         </div>
         {/* Tracks */}
         {/* tracks container */}
-        <div className="max-h-[550px] h-full overflow-y-auto mb-12 md:mb-0">
+        <div className="max-h-[650px] md:max-h-[550px] h-full overflow-y-auto mb-12 md:mb-0">
           {tabItems[tabIndex].isLoading || !tabItems[tabIndex].data ? (
             <div className="flex flex-col gap-1">
               {[...new Array(20)].map((_, index) => (
@@ -110,7 +113,7 @@ const TopTracks = ({ session }) => {
             <div className="flex flex-col">
               {/* track */}
               {tabItems[tabIndex].data?.items.map((track, index) => (
-                <Track track={track} key={index} index={index} />
+                <Track track={track} key={index} index={index} renderCount={true}/>
               ))}
             </div>
           )}

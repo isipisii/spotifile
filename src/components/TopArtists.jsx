@@ -72,7 +72,7 @@ const TopArtists = ({ length, render, session }) => {
 
   return (
     <div className={`mb-[4rem] ${!render ? "p-8" : null}`}>
-      {/* to avoid rendering in the profile component */}
+      {/* the negated render's purpose is to avoid rendering of a specific element or styles in the profile component */}
       {!render && (
         <div
           className="top-artist-background"
@@ -89,11 +89,11 @@ const TopArtists = ({ length, render, session }) => {
       >
         <h1
           className={`text-white 
-               ${
-                 !render
-                   ? "text-[1.6rem] font-bold text-center"
-                   : "md:text-[1.3rem] font-semibold text-[1.1rem]"
-               }`}
+              ${
+                !render
+                  ? "text-[1.6rem] font-bold text-center"
+                  : "md:text-[1.3rem] font-semibold text-[1.1rem]"
+              }`}
         >
           {render ? "Top Artists of all time" : tabItems[tabIndex].title}
         </h1>
