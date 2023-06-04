@@ -7,6 +7,7 @@ import {
 import { usePalette } from "@lauriys/react-palette";
 import TrackCardLoader from "./Loaders/TrackCardLoader";
 import Track from "./Track";
+import SongPlayer from "./SongPlayer";
 
 const PlaylistDetails = ({ session }) => {
   const params = useParams();
@@ -16,7 +17,15 @@ const PlaylistDetails = ({ session }) => {
   const playlistImage = playlistDetails?.images[0]?.url;
   const { data: color } = usePalette(playlistImage);
 
-  console.log(session?.accessToken);
+  function getSongUris() {
+    const uris = [];
+    playlistDetails?.tracks?.items?.forEach((track) => {
+      uris.push(track?.track?.uri);
+    });
+    return uris;
+  }
+
+  console.log(playlistDetails);
 
   return (
     <section className="flex relative items-center justify-center">
@@ -27,8 +36,10 @@ const PlaylistDetails = ({ session }) => {
           "--via-color": "#121212d1",
         }}
       />
-      <div className="w-full max-w-[1200px] md:w-[92%] md:ml-[100px] flex flex-col gap-9 p-8">
+      <div className="w-full max-w-[1200px] md:w-[92%] md:ml-[100px] flex flex-col gap-9 p-8 ">
         {/* Upper part */}
+        {/* Player */}
+        <SongPlayer accessToken={session?.accessToken} trackUris={getSongUris} />
         <div className="flex flex-col md:items-end md:flex-row gap-4 md:gap-8 my-8">
           <img
             src={playlistDetails?.images[0]?.url}
@@ -62,7 +73,6 @@ const PlaylistDetails = ({ session }) => {
           </div>
         </div>
         {/* end of upper part */}
-
         {/* tracks */}
         <div>
           <h1
