@@ -1,9 +1,9 @@
 "use client";
 import { useCallback } from "react";
+
 import moment from "moment";
 
 const Track = ({ track, index, renderCount }) => {
-  
   // format artists name with commas
   const formatArtistNames = useCallback(() => {
     let artistsName = [];
@@ -16,7 +16,7 @@ const Track = ({ track, index, renderCount }) => {
 
   return (
     // <Link href={`/track/${track.id}`}>
-    <div className="flex justify-between hover:bg-[#5655556f] p-2 items-center rounded-md">
+    <div className="flex justify-between hover:bg-[#5655556f] p-2 items-center rounded-md relative">
       <div className="flex gap-3 items-center justify-between">
         {renderCount && (
           <p className="text-[#bcbcbcab] text-xs sm:text-sm p-3 font-semibold">

@@ -37,9 +37,8 @@ const Playlists = ({ session }) => {
         ) : (
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-4 gap-4 mb-12">
             {playLists?.items.map((playList, index) => (
-              <Link href={`/playlist/${playList?.id}`}>
+              <Link href={`/playlist/${playList?.id}`} key={index}>
                 <div
-                  key={index}
                   className="bg-[#0000002d] flex rounded-[7px] flex-col gap-2 max-w-[250px] p-5 hover:bg-[#3534346f] "
                 >
                   <img
