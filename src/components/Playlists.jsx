@@ -39,7 +39,7 @@ const Playlists = ({ session }) => {
             {playLists?.items.map((playList, index) => (
               <Link href={`/playlist/${playList?.id}`} key={index}>
                 <div
-                  className="bg-[#0000002d] flex rounded-[7px] flex-col gap-2 max-w-[250px] p-5 hover:bg-[#3534346f] "
+                  className="bg-[#0000002d] flex rounded-[7px] flex-col gap-2 max-w-[250px] p-5 hover:bg-[#3534346f]"
                 >
                   <img
                     loading="lazy"
