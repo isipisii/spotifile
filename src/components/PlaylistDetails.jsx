@@ -8,6 +8,7 @@ import { usePalette } from "@lauriys/react-palette";
 import TrackCardLoader from "./Loaders/TrackCardLoader";
 import Track from "./Track";
 import SongPlayer from "./SongPlayer";
+import { useState } from "react";
 
 const PlaylistDetails = ({ session }) => {
   const params = useParams();
@@ -16,6 +17,7 @@ const PlaylistDetails = ({ session }) => {
   const { data: userDetails } = useGetUserByIdQuery(playlistDetails?.owner?.id);
   const playlistImage = playlistDetails?.images[0]?.url;
   const { data: color } = usePalette(playlistImage);
+  const [currentSong, setCurrentSong] = useState("");
 
   function getSongUris() {
     const uris = [];
@@ -24,8 +26,6 @@ const PlaylistDetails = ({ session }) => {
     });
     return uris;
   }
-
-  console.log(playlistDetails);
 
   return (
     <section className="flex relative items-center justify-center">
@@ -39,7 +39,7 @@ const PlaylistDetails = ({ session }) => {
       <div className="w-full max-w-[1200px] md:w-[92%] md:ml-[100px] flex flex-col gap-9 p-8 ">
         {/* Upper part */}
         {/* Player */}
-        <SongPlayer accessToken={session?.accessToken} trackUris={getSongUris} />
+        <SongPlayer accessToken={session?.accessToken} trackUris={getSongUris} currentSong={currentSong} />
         <div className="flex flex-col md:items-end md:flex-row gap-4 md:gap-8 my-8">
           <img
             src={playlistDetails?.images[0]?.url}
@@ -96,6 +96,7 @@ const PlaylistDetails = ({ session }) => {
                   key={index}
                   index={index}
                   renderCount={true}
+                  setCurrentSong={setCurrentSong}
                 />
               ))}
             </div>
