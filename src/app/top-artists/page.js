@@ -11,7 +11,7 @@ const TopArtistsPage = () => {
   
   return (
     <section className="flex items-center justify-center relative">
-      <div className="w-full max-w-[1200px] md:w-[92%] md:ml-[100px] flex flex-col gap-10 ">
+      <div className="w-full max-w-[1400px] md:w-[92%] md:ml-[100px] flex flex-col gap-10 ">
         <TopArtists session={session} length={20}/>
       </div>
     </section>
