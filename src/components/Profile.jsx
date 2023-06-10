@@ -77,7 +77,7 @@ const Profile = ({ session }) => {
         "--via-color": "#121212d1",
       }}
     >
-      <div className="relative w-full max-w-[1200px] md:w-[92%] md:ml-[100px] flex flex-col gap-10 p-8 ">
+      <div className="relative w-full max-w-[1400px] md:w-[92%] md:ml-[100px] flex flex-col gap-10 p-8 ">
         {/* top part */}
         <div className="flex items-center justify-between ">
           <h1 className="text-white font-bold text-[1.6rem]">Profile</h1>
