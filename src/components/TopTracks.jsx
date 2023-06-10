@@ -81,7 +81,7 @@ const TopTracks = ({ session }) => {
         "--via-color": "#121212d1",
       }}
     >
-      <div className="relative w-full max-w-[1200px] md:w-[92%] md:ml-[100px] flex flex-col gap-4 p-8">
+      <div className="relative w-full max-w-[1400px] md:w-[92%] md:ml-[100px] flex flex-col gap-4 p-8">
         <div className="flex justify-between items-center mb-4 gap-4 flex-col md:flex-row">
           <h1 className="text-white font-bold text-[1.6rem] text-center">
             {tabItems[tabIndex].title}
