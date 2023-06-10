@@ -3,22 +3,43 @@ import { useParams } from "next/navigation";
 import {
   useGetPlaylistDetailsQuery,
   useGetUserByIdQuery,
+  useLazyGetCurrentlyPlayingTrackQuery,
 } from "@/services/spotify";
 import { usePalette } from "@lauriys/react-palette";
 import TrackCardLoader from "./Loaders/TrackCardLoader";
 import Track from "./Track";
 import SongPlayer from "./SongPlayer";
 import { useState } from "react";
+import { useEffect } from "react";
 
 const PlaylistDetails = ({ session }) => {
   const params = useParams();
-  const { data: playlistDetails, isLoading: isPlaylistLoading } =
-    useGetPlaylistDetailsQuery(params.id);
+  const { data: playlistDetails, isLoading: isPlaylistLoading } = useGetPlaylistDetailsQuery(params.id);
   const { data: userDetails } = useGetUserByIdQuery(playlistDetails?.owner?.id);
+  const [getCurrentlyPlaying, { data: currentlyPlaying }] = useLazyGetCurrentlyPlayingTrackQuery();
+
   const playlistImage = playlistDetails?.images[0]?.url;
   const { data: color } = usePalette(playlistImage);
-  const [currentSong, setCurrentSong] = useState("");
+  const [currentTrackIndex, setCurrentTrackIndex] = useState(0);
 
+  // get currently playing track in the first render
+  //BUGGGG
+  useEffect(() => {
+    getCurrentlyPlaying();
+  }, [currentTrackIndex]);
+
+
+  //BUGGGG
+  function handleClickTrack(index) {
+    setCurrentTrackIndex(index);
+    
+    //in order to get the current track after the state updated to avoid fetching the last tracked played
+    setTimeout(() => {
+      getCurrentlyPlaying();
+    }, 500);
+  }
+
+  //for collecting the uris of different tracks inside the playlist
   function getSongUris() {
     const uris = [];
     playlistDetails?.tracks?.items?.forEach((track) => {
@@ -36,10 +57,14 @@ const PlaylistDetails = ({ session }) => {
           "--via-color": "#121212d1",
         }}
       />
-      <div className="w-full max-w-[1200px] md:w-[92%] md:ml-[100px] flex flex-col gap-9 p-8 ">
+      <div className="w-full max-w-[1400px] md:w-[92%] md:ml-[100px] flex flex-col gap-9 p-8 mb-[200px] md:mb-[90px]">
         {/* Upper part */}
         {/* Player */}
-        <SongPlayer accessToken={session?.accessToken} trackUris={getSongUris} currentSong={currentSong} />
+        <SongPlayer
+          accessToken={session?.accessToken}
+          trackUris={getSongUris}
+          currentTrackIndex={currentTrackIndex}
+        />
         <div className="flex flex-col md:items-end md:flex-row gap-4 md:gap-8 my-8">
           <img
             src={playlistDetails?.images[0]?.url}
@@ -96,7 +121,7 @@ const PlaylistDetails = ({ session }) => {
                   key={index}
                   index={index}
                   renderCount={true}
-                  setCurrentSong={setCurrentSong}
+                  handleClickTrack={handleClickTrack}
                 />
               ))}
             </div>
