@@ -100,7 +100,7 @@ const ArtistDetails = ({ session }) => {
 
   return (
     <section className="flex relative items-center justify-center">
-      <div className="w-full max-w-[1200px] md:w-[92%] md:ml-[100px] flex flex-col gap-9 p-8">
+      <div className="w-full max-w-[1400px] md:w-[92%] md:ml-[100px] flex flex-col gap-9 p-8">
         <div
           className="artist-background"
           style={{
