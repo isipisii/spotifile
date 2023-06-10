@@ -131,6 +131,9 @@ export const spotifyApi = createApi({
     }),
     getAlbumDetails: builder.query({
       query: (id) => `/albums/${id}`
+    }),
+    getCurrentlyPlayingTrack: builder.query({
+      query: () => "/me/player/currently-playing"
     })
   }),
 });
@@ -167,5 +170,6 @@ export const {
   useGetUserByIdQuery,
 
   //album
-  useGetAlbumDetailsQuery
+  useGetAlbumDetailsQuery,
+  useLazyGetCurrentlyPlayingTrackQuery,
 } = spotifyApi;
