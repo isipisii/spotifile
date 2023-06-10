@@ -1,16 +1,16 @@
 "use client";
 import SpotifyWebPlayer from "react-spotify-web-playback";
 
-const SongPlayer = ({ accessToken, trackUris, currentSong }) => {
+const SongPlayer = ({ accessToken, trackUris, currentTrackIndex }) => {
 
   return (
-    <div className="fixed bottom-0 left-0 w-full z-10">
-      {/* TODO */}
+    <div className="fixed bottom-[4.3rem] md:bottom-0 left-0 w-full z-10">
       {trackUris() && (
         <SpotifyWebPlayer
           token={accessToken}
           magnifySliderOnHover={true}
-          offset={!currentSong ? 0 : currentSong}
+          // will set the first index if the user hasnt clicked the song at first render
+          offset={currentTrackIndex}
           uris={trackUris()}
           styles={{
             activeColor: "#fff",
