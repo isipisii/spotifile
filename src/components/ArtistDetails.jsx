@@ -26,6 +26,7 @@ const ArtistDetails = ({ session }) => {
   );
   const { data: artistAlbums, isLoading: isArtistAlbumLoading } =
     useGetArtistsAlbumQuery(params.id);
+
   const {
     data: artistTopTracks,
     isLoading: isTopTracksLoading,
@@ -34,10 +35,12 @@ const ArtistDetails = ({ session }) => {
     id: params.id,
     country: userData?.country,
   });
+
   const { data: isFollowing, refetch: refetchIsFollowing } =
     useGetCheckIfUserFollowsQuery({
       id: params.id,
     });
+    
   const { data: relatedArtists } = useGetRelatedArtistsQuery(params.id);
 
   // mutations
