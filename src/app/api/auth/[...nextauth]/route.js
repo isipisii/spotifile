@@ -48,7 +48,7 @@ export async function getRefreshedAccessToken(token) {
     ...token,
     accessToken: data.access_token,
     refreshToken: data.refresh_token ?? token.refreshToken,
-    accessTokenExpires: Date.now() + data.expires_in * 1000,
+    accessTokenExpires: Date.now() + 5 * 24 * 60 * 60 * 1000,
   };
 }
 
