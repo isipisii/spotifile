@@ -1,6 +1,5 @@
 "use client";
 import { useSession } from "next-auth/react";
-import Login from "@/components/Login";
 import Profile from "@/components/Profile";
 import { useDispatch } from "react-redux";
 import { setAccessToken } from "@/slice/authSlice";
