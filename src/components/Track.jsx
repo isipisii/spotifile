@@ -1,9 +1,16 @@
 "use client";
 import { useCallback } from "react";
-
 import moment from "moment";
 
-const Track = ({ track, index, renderCount, handleClickTrack }) => {
+const Track = ({ track, index, renderCount, setCurrentTrackIndex, currentlyPlaying }) => {
+
+  function isTrackPlaying(){
+    if(track?.id === currentlyPlaying?.item?.id && currentlyPlaying?.is_playing){
+      return true
+    }
+    return false
+  }
+
   // format artists name with commas
   const formatArtistNames = useCallback(() => {
     let artistsName = [];
@@ -18,7 +25,7 @@ const Track = ({ track, index, renderCount, handleClickTrack }) => {
     // <Link href={`/track/${track.id}`}>
     <div
       className="flex justify-between hover:bg-[#5655556f] p-2 items-center rounded-md relative"
-      onClick={() => handleClickTrack(index)}
+      onClick={() => setCurrentTrackIndex(index)}
     >
       <div className="flex gap-3 items-center justify-between">
         {renderCount && (
@@ -32,7 +39,7 @@ const Track = ({ track, index, renderCount, handleClickTrack }) => {
           className="w-[40px] h-[40px] sm:w-[45px] md:h-[45px] rounded-sm"
         />
         <div>
-          <p className="text-white text-[.85rem] md:text-[.9rem] truncate w-[150px] sm:w-[200px] md:-[250px] lg:w-[350px] sm:truncate-none font-medium">
+          <p className={`${isTrackPlaying() ? "text-green-400" : "text-white" } text-[.85rem] md:text-[.9rem] truncate w-[150px] sm:w-[200px] md:-[250px] lg:w-[350px] sm:truncate-none font-medium`}>
             {track?.name}
           </p>
           <p className="text-[#898585d0] text-[.7rem] md:text-[.8rem] truncate w-[150px] sm:w-[200px] md:-[250px] lg:w-[350px] sm:truncate-none">

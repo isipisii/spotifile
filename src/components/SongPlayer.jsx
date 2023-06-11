@@ -10,7 +10,7 @@ const SongPlayer = ({ accessToken, trackUris, currentTrackIndex }) => {
           token={accessToken}
           magnifySliderOnHover={true}
           // will set the first index if the user hasnt clicked the song at first render
-          offset={currentTrackIndex}
+          offset={currentTrackIndex ?  currentTrackIndex : 0 }
           uris={trackUris()}
           styles={{
             activeColor: "#fff",
