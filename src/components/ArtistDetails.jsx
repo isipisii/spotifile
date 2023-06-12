@@ -18,6 +18,7 @@ import TrackCardLoader from "./Loaders/TrackCardLoader";
 import AlbumCard from "./AlbumCard";
 import PlaylistCardLoader from "./Loaders/PlaylistCardLoader";
 import ArtistCard from "./ArtistCard";
+import DetailLoader from "./Loaders/DetailLoader";
 
 const ArtistDetails = ({ session }) => {
   const params = useParams();
@@ -36,15 +37,20 @@ const ArtistDetails = ({ session }) => {
     country: userData?.country,
   });
 
-  const { data: isFollowing, refetch: refetchIsFollowing } =
-    useGetCheckIfUserFollowsQuery({
-      id: params.id,
-    });
-    
+  const { data: artist, isLoading: isArtistLoading } = useGetArtistQuery(
+    params.id
+  );
+  const {
+    data: isFollowing,
+    refetch: refetchIsFollowing,
+    isLoading: isFollowingLoading,
+  } = useGetCheckIfUserFollowsQuery({
+    id: params.id,
+  });
+
   const { data: relatedArtists } = useGetRelatedArtistsQuery(params.id);
 
   // mutations
-  const { data: artist } = useGetArtistQuery(params.id);
   const [followArtist] = useFollowArtistMutation();
   const [unfollowArtist] = useUnfollowArtistMutation();
 
@@ -80,7 +86,7 @@ const ArtistDetails = ({ session }) => {
     [params.id]
   );
 
-  // refetch the isfollowing
+  // to refetch the datas when refreshed
   useEffect(() => {
     if (session?.accessToken) {
       refetchUserData();
@@ -89,6 +95,7 @@ const ArtistDetails = ({ session }) => {
     }
   }, [session]);
 
+  //on click handler of follow button
   function handleFollowArtist() {
     if (isFollowing && isFollowing[0]) {
       unfollowArtist(params.id).then(() => {
@@ -112,33 +119,39 @@ const ArtistDetails = ({ session }) => {
           }}
         />
         <div className="flex flex-col md:items-end md:flex-row gap-4 md:gap-8 mt-8">
-          <img
-            src={artistImage}
-            alt="artist"
-            className=" object-cover h-[200px] w-[200px] md:h-[250px] md:w-[250px] shadow-xl rounded-full shadow-[#0202024d]"
-          />
-          <div>
-            <h1 className="text-white font-[800] text-[2.5rem] sm:text-[3.5rem] lg:text-[4.5rem] text-shadow-md">
-              {artist?.name}
-            </h1>
-            <p className="text-[#ffffffa7] mb-2 text-sm">
-              Followers:{" "}
-              <span>{artist && addCommas(artist?.followers?.total)}</span>
-            </p>
-            <p className="text-[#ffffffa7] text-sm mb-4">
-              Popularity: <span>{artist && artist?.popularity}%</span>
-            </p>
-            <button
-              onClick={handleFollowArtist}
-              className={`text-white ${
-                isFollowing && isFollowing[0]
-                  ? "border-white font-semibold"
-                  : "border-[#817d7d] hover:border-white"
-              } font-medium text-sm py-2 px-8 md:py-2 md:px-10 border-[2px] rounded-full`}
-            >
-              {isFollowing && isFollowing[0] ? "Following" : "Follow"}
-            </button>
-          </div>
+          {(isFollowingLoading && isArtistLoading) || !artist ? (
+            <DetailLoader isInArtist={true} />
+          ) : (
+            <>
+              <img
+                src={artistImage}
+                alt="artist"
+                className=" object-cover h-[200px] w-[200px] md:h-[250px] md:w-[250px] shadow-xl rounded-full shadow-[#0202024d]"
+              />
+              <div>
+                <h1 className="text-white font-[800] text-[2.5rem] sm:text-[3.5rem] lg:text-[4.5rem] text-shadow-md">
+                  {artist?.name}
+                </h1>
+                <p className="text-[#ffffffa7] mb-2 text-sm">
+                  Followers:{" "}
+                  <span>{artist && addCommas(artist?.followers?.total)}</span>
+                </p>
+                <p className="text-[#ffffffa7] text-sm mb-4">
+                  Popularity: <span>{artist && artist?.popularity}%</span>
+                </p>
+                <button
+                  onClick={handleFollowArtist}
+                  className={`text-white ${
+                    isFollowing && isFollowing[0]
+                      ? "border-white font-semibold"
+                      : "border-[#817d7d] hover:border-white"
+                  } font-medium text-sm py-2 px-8 md:py-2 md:px-10 border-[2px] rounded-full`}
+                >
+                  {isFollowing && isFollowing[0] ? "Following" : "Follow"}
+                </button>
+              </div>
+            </>
+          )}
         </div>
 
         {/*Popular tracks  */}
