@@ -47,7 +47,7 @@ const Playlists = ({ session }) => {
                     src={playList?.images[0]?.url}
                     alt=""
                   />
-                  <h2 className="text-white font-semibold text-left text-xs sm:text-sm ">
+                  <h2 className="text-white font-semibold text-center text-xs sm:text-sm ">
                     {playList?.name}
                   </h2>
                 </div>

@@ -37,8 +37,6 @@ const PlaylistDetails = ({ session }) => {
   const playlistImage = playlistDetails?.images[0]?.url;
   const { data: color } = usePalette(playlistImage);
 
-  console.log(currentlyPlaying);
-
   useEffect(() => {
     if (session?.accessToken) {
       refetchPlaylistDetails();
