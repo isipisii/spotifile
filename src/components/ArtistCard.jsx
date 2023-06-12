@@ -10,6 +10,7 @@ const ArtistCard = ({ artist, index }) => {
         <img
           loading="lazy"
           src={artist?.images[0]?.url}
+          alt=""
           className="rounded-[100%] shadow-md shadow-[#02020292] object-cover w-[110px] h-[110px] xs:w-[135px] xs:h-[135px]  sm:w-[135px] sm:h-[135px] md:h-[140px] md:w-[140px] lg:h-[150px] lg:w-[150px]"
         />
         <h3 className="text-white text-[.8rem] sm:text-sm md:text-base mt-2 font-medium text-center">

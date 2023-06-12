@@ -44,7 +44,7 @@ const PlaylistDetails = ({ session }) => {
       refetchPlaylistDetails();
       refetchUserDetails();
     }
-  }, [session?.accessToken]);
+  }, []);
 
   //for collecting the uris of different tracks inside the playlist
   function getSongUris() {
@@ -81,6 +81,7 @@ const PlaylistDetails = ({ session }) => {
               <img
                 src={playlistDetails?.images[0]?.url}
                 className=" object-cover h-[200px] w-[200px] md:h-[250px] md:w-[250px] shadow-xl shadow-[#0202024d]"
+                alt=""
               />
               <div className="flex flex-col gap-3">
                 <div>

@@ -68,7 +68,7 @@ const TopArtists = ({ length, render, session }) => {
     if (session?.accessToken) {
       refetchTopArtists();
     }
-  }, [session?.accessToken]);
+  }, []);
 
   return (
     <div className={`mb-[4rem] ${!render ? "p-8" : null}`}>

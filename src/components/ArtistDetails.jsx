@@ -83,7 +83,7 @@ const ArtistDetails = ({ session }) => {
       let formattedNumber = result.reverse().join("");
       return formattedNumber;
     },
-    [params.id]
+    []
   );
 
   // to refetch the datas when refreshed
@@ -93,7 +93,7 @@ const ArtistDetails = ({ session }) => {
       refetchIsFollowing();
       refetchTopTracks();
     }
-  }, [session]);
+  }, []);
 
   //on click handler of follow button
   function handleFollowArtist() {

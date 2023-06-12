@@ -45,6 +45,7 @@ const Playlists = ({ session }) => {
                     loading="lazy"
                     className="rounded-[4px]"
                     src={playList?.images[0]?.url}
+                    alt=""
                   />
                   <h2 className="text-white font-semibold text-left text-xs sm:text-sm ">
                     {playList?.name}

@@ -35,7 +35,6 @@ const Track = ({
   }, [track]);
 
   return (
-    // <Link href={`/track/${track.id}`}>
     <div
       className="flex justify-between hover:bg-[#5655556f] p-2 items-center rounded-md relative"
       onClick={() => setCurrentTrackIndex(index)}
@@ -51,6 +50,7 @@ const Track = ({
           loading="lazy"
           src={isInAlbum ? albumImage : track?.album?.images[0]?.url}
           className="w-[40px] h-[40px] sm:w-[45px] md:h-[45px] rounded-sm"
+          alt=""
         />
         <div>
           <p
@@ -78,7 +78,6 @@ const Track = ({
           .format("m:ss")}
       </p>
     </div>
-    // </Link>
   );
 };
 

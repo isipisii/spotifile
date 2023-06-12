@@ -56,12 +56,20 @@ const Profile = ({ session }) => {
     return topTrackIds;
   }
 
+  
+  useEffect(() => {
+    if (!session?.accesToken && !session) {
+      router.push("/sign-in");
+    }
+  }, []);
+
   // refetch
   useEffect(() => {
     refetchTracks();
     refetchFollowing();
     refetchTrackReco();
     refetchTracks();
+    refetchPlaylists();
   }, []);
 
   async function handleLogout() {
@@ -106,6 +114,7 @@ const Profile = ({ session }) => {
                     loading="lazy"
                     className="rounded-full h-[150px] w-[150px]"
                     src={userData?.images[0]?.url}
+                    alt=""
                   />
                 </a>
                 <h1 className="text-center text-white text-[3rem] md:text-[4rem] font-bold">

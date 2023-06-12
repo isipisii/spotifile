@@ -4,7 +4,7 @@ import { useDispatch } from "react-redux";
 import { setAccessToken } from "@/slice/authSlice";
 import PlaylistDetails from "@/components/PlaylistDetails";
 
-const page = () => {
+const PlaylistPage = () => {
   const { data: session } = useSession();
   const dispatch = useDispatch();
   dispatch(setAccessToken(session?.accessToken));
@@ -12,4 +12,4 @@ const page = () => {
   return <PlaylistDetails session={session}/>;
 };
 
-export default page;
+export default PlaylistPage;
