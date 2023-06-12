@@ -3,6 +3,8 @@ import { useGetAlbumDetailsQuery } from "@/services/spotify";
 import { useParams } from "next/navigation";
 import { usePalette } from "@lauriys/react-palette";
 import DetailLoader from "./Loaders/DetailLoader";
+import Track from "./Track";
+import TrackCardLoader from "./Loaders/TrackCardLoader";
 
 //todoooooooo
 const AlbumDetails = ({ accessToken }) => {
@@ -11,6 +13,7 @@ const AlbumDetails = ({ accessToken }) => {
     useGetAlbumDetailsQuery(params.id);
   const albumImage = albumDetails?.images[0]?.url;
   const { data: color } = usePalette(albumImage);
+
 
   return (
     <section className="flex relative items-center justify-center">
@@ -49,6 +52,36 @@ const AlbumDetails = ({ accessToken }) => {
             </>
           )}
         </div>
+
+        {/* tracks */}
+        <div>
+          <h1
+            className="text-white font-semibold
+                text-[1.1rem] md:text-[1.3rem] mb-4"
+          >
+            Tracks
+          </h1>
+          {isAlbumDetailsLoading || !albumDetails ? (
+            <div className="flex flex-col gap-1">
+              {[...new Array(20)].map((_, index) => (
+                <TrackCardLoader key={index} />
+              ))}
+            </div>
+          ) : (
+            <div className="flex flex-col">
+              {/* track */}
+              {albumDetails?.tracks?.items.map((track, index) => (
+                <Track
+                  track={track}
+                  key={index}
+                  isInAlbum={true}
+                  albumImage={albumImage}
+                />
+              ))}
+            </div>
+          )}
+        </div>
+        {/* end of tracks */}
       </div>
     </section>
   );
