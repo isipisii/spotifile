@@ -1,14 +1,27 @@
 "use client";
 import { useCallback } from "react";
 import moment from "moment";
+import Link from "next/link";
 
-const Track = ({ track, index, renderCount, setCurrentTrackIndex, currentlyPlaying }) => {
+const Track = ({
+  track,
+  index,
+  renderCount,
+  setCurrentTrackIndex,
+  currentlyPlaying,
+  isInAlbum,
+  albumImage,
+}) => {
 
-  function isTrackPlaying(){
-    if(track?.id === currentlyPlaying?.item?.id && currentlyPlaying?.is_playing){
-      return true
+  //if in playlist component only
+  function isTrackPlaying() {
+    if (
+      track?.id === currentlyPlaying?.item?.id &&
+      currentlyPlaying?.is_playing
+    ) {
+      return true;
     }
-    return false
+    return false;
   }
 
   // format artists name with commas
@@ -33,13 +46,18 @@ const Track = ({ track, index, renderCount, setCurrentTrackIndex, currentlyPlayi
             {index + 1}
           </p>
         )}
+        {/* this condition will just work if the parent component of this component is the AlbumDetails */}
         <img
           loading="lazy"
-          src={track?.album?.images[0]?.url}
+          src={isInAlbum ? albumImage : track?.album?.images[0]?.url}
           className="w-[40px] h-[40px] sm:w-[45px] md:h-[45px] rounded-sm"
         />
         <div>
-          <p className={`${isTrackPlaying() ? "text-green-400" : "text-white" } text-[.85rem] md:text-[.9rem] truncate w-[150px] sm:w-[200px] md:-[250px] lg:w-[350px] sm:truncate-none font-medium`}>
+          <p
+            className={`${
+              isTrackPlaying() ? "text-green-400" : "text-white"
+            } text-[.85rem] md:text-[.9rem] truncate w-[150px] sm:w-[200px] md:-[250px] lg:w-[350px] sm:truncate-none font-medium`}
+          >
             {track?.name}
           </p>
           <p className="text-[#898585d0] text-[.7rem] md:text-[.8rem] truncate w-[150px] sm:w-[200px] md:-[250px] lg:w-[350px] sm:truncate-none">
@@ -47,9 +65,12 @@ const Track = ({ track, index, renderCount, setCurrentTrackIndex, currentlyPlayi
           </p>
         </div>
       </div>
-      <p className="text-[#bbb4b4d0] text-[.8rem] text-left truncate w-[150px] sm:w-[200px] md:-[250px] lg:w-[350px] sm:truncate-none hidden sm:block">
-        {track?.album?.name}
-      </p>
+      {/* album name */}
+      <Link href={`/album/${track?.album?.id}`}>
+        <p className="text-[#bbb4b4d0] text-[.8rem] text-left truncate w-[150px] sm:w-[200px] md:-[250px] lg:w-[350px] sm:truncate-none hidden sm:block hover:underline-offset-2 hover:underline">
+          {track?.album?.name}
+        </p>
+      </Link>
 
       <p className="text-[#898585d0] text-[.6rem] md:text-[.8rem] font-semibold p-3">
         {moment
