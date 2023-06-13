@@ -93,7 +93,7 @@ const Profile = ({ session }) => {
             className="font-medium text-white text-sm rounded-full py-2 px-5 transition-all duration-300 hover:text-black hover:bg-white border border-[#dad4d4]"
             onClick={handleLogout}
           >
-            Log out
+            Sign out
           </button>
         </div>
 
