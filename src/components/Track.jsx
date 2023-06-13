@@ -24,7 +24,7 @@ const Track = ({
     return false;
   }
 
-  // format artists name with commas
+  // format artist's name with commas
   const formatArtistNames = useCallback(() => {
     let artistsName = [];
     track?.artists.forEach((artist) => {
@@ -41,7 +41,7 @@ const Track = ({
     >
       <div className="flex gap-3 items-center justify-between">
         {renderCount && (
-          <p className="text-[#bcbcbcab] text-xs sm:text-sm p-3 font-semibold">
+          <p className="text-[#bcbcbcab] text-xs sm:text-sm p-1 font-semibold">
             {index + 1}
           </p>
         )}
@@ -49,7 +49,7 @@ const Track = ({
         <img
           loading="lazy"
           src={isInAlbum ? albumImage : track?.album?.images[0]?.url}
-          className="w-[40px] h-[40px] sm:w-[45px] md:h-[45px] rounded-sm"
+          className="w-[45px] h-[45px] sm:w-[50px] md:h-[50px] rounded-sm"
           alt=""
         />
         <div>
@@ -72,7 +72,7 @@ const Track = ({
         </p>
       </Link>
 
-      <p className="text-[#898585d0] text-[.6rem] md:text-[.8rem] font-semibold p-3">
+      <p className="text-[#898585d0] text-[.6rem] md:text-[.8rem] font-semibold p-1">
         {moment
           .utc(moment.duration(track?.duration_ms).as("millisecond"))
           .format("m:ss")}
