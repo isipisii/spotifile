@@ -18,10 +18,13 @@ const NavBar = () => {
         >
           <div className="w-full flex flex-row md:flex-col ">
             <div className="hidden md:flex flex-col items-center gap-2 py-6 px-4">
-              <Image src="/images/spotifylogo.png" width={30} height={30} alt="" />
               <h1 className="text-green-500 font-bold">
                 Spotifile
               </h1>
+              <div className="flex gap-1">
+                <p className="text-white text-[.4rem]">Powered by Spotify</p>
+                <img src="/images/spotifylogo.png" alt="logo" className="w-[10px]"/>
+              </div>
             </div>
             {navItems.map((item) => (
               <Link
