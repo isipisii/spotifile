@@ -19,6 +19,7 @@ import AlbumCard from "./AlbumCard";
 import PlaylistCardLoader from "./Loaders/PlaylistCardLoader";
 import ArtistCard from "./ArtistCard";
 import DetailLoader from "./Loaders/DetailLoader";
+import { useNotify } from "@/hooks/useNotify";
 
 const ArtistDetails = ({ session }) => {
   const params = useParams();
@@ -57,6 +58,35 @@ const ArtistDetails = ({ session }) => {
   const artistImage = artist?.images[0]?.url;
   const { data: color } = usePalette(artistImage); //extract color
   const [albumCount, setAlbumCount] = useState(10);
+  // const [notification, setNotification] = useState(null);
+  const [notificationMessage, makeNotification] = useNotify();
+
+  // add commas to the followers count
+  const addCommas = (num) => {
+    let chars = num.toString().split("");
+    let reversedChars = chars.reverse();
+
+    let result = [];
+    for (let i = 0; i < reversedChars.length; i++) {
+      if (i > 0 && i % 3 === 0) {
+        result.push(", ");
+      }
+      result.push(reversedChars[i]);
+    }
+    // reverse the resulting array and join it back into a string
+    let formattedNumber = result.reverse().join("");
+    return formattedNumber;
+  };
+
+  // to refetch the data when refreshed
+  useEffect(() => {
+    if (session?.accessToken) {
+      refetchUserData();
+      refetchIsFollowing();
+      refetchTopTracks();
+    }
+  }, []);
+
 
   function handleSeeMore() {
     setAlbumCount((prev) => prev + 10);
@@ -66,58 +96,42 @@ const ArtistDetails = ({ session }) => {
     setAlbumCount((prev) => prev - 10);
   }
 
-  // add commas to the followers count
-  const addCommas = useCallback(
-    (num) => {
-      let chars = num.toString().split("");
-      let reversedChars = chars.reverse();
-
-      let result = [];
-      for (let i = 0; i < reversedChars.length; i++) {
-        if (i > 0 && i % 3 === 0) {
-          result.push(", ");
-        }
-        result.push(reversedChars[i]);
-      }
-      // reverse the resulting array and join it back into a string
-      let formattedNumber = result.reverse().join("");
-      return formattedNumber;
-    },
-    []
-  );
-
-  // to refetch the datas when refreshed
-  useEffect(() => {
-    if (session?.accessToken) {
-      refetchUserData();
-      refetchIsFollowing();
-      refetchTopTracks();
-    }
-  }, []);
-
   //on click handler of follow button
   function handleFollowArtist() {
+    // check is the isFollowing is true in order to unfollow the artist
     if (isFollowing && isFollowing[0]) {
       unfollowArtist(params.id).then(() => {
         refetchIsFollowing();
+        makeNotification("Artist removed from your following")
       });
     } else {
       followArtist(params.id).then(() => {
         refetchIsFollowing();
+        makeNotification("Artist added to your following")
       });
     }
   }
 
   return (
     <section className="flex relative items-center justify-center">
-      <div className="w-full max-w-[1400px] md:w-[92%] md:ml-[100px] flex flex-col gap-9 p-8">
-        <div
-          className="artist-background"
-          style={{
-            "--from-color": color.darkVibrant,
-            "--via-color": "#121212d1",
-          }}
-        />
+      {/* gradient bg */}
+      <div
+        className="artist-background"
+        style={{
+          "--from-color": color.darkVibrant,
+          "--via-color": "#121212d1",
+        }}
+      />
+      <div className="w-full max-w-[1400px] md:w-[92%] md:ml-[100px] relative flex flex-col gap-9 p-8">
+        {/* notification */}
+        {notificationMessage && (
+          <div className="z-20 fixed bottom-2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-blur-sm bg-green-600 rounded-md p-3 md:p-4">
+            <p className="text-white text-[.6rem] sm:text-[.7rem] font-bold">
+              {notificationMessage}
+            </p>
+          </div>
+        )}
+
         <div className="flex flex-col md:items-end md:flex-row gap-4 md:gap-8 mt-8">
           {(isFollowingLoading && isArtistLoading) || !artist ? (
             <DetailLoader isInArtist={true} />
