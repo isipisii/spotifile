@@ -1,5 +1,4 @@
 "use client";
-import { useCallback } from "react";
 import moment from "moment";
 import Link from "next/link";
 
@@ -11,8 +10,8 @@ const Track = ({
   currentlyPlaying,
   isInAlbum,
   albumImage,
+  showAlbum,
 }) => {
-
   //if in playlist component only
   function isTrackPlaying() {
     if (
@@ -25,14 +24,14 @@ const Track = ({
   }
 
   // format artist's name with commas
-  const formatArtistNames = useCallback(() => {
+  function formatArtistNames() {
     let artistsName = [];
     track?.artists.forEach((artist) => {
       artistsName.push(artist?.name);
     });
 
     return artistsName.join(", ");
-  }, [track]);
+  }
 
   return (
     <div
@@ -66,11 +65,14 @@ const Track = ({
         </div>
       </div>
       {/* album name */}
-      <Link href={`/album/${track?.album?.id}`}>
-        <p className="text-[#bbb4b4d0] text-[.8rem] text-left truncate w-[150px] sm:w-[200px] md:-[250px] lg:w-[350px] sm:truncate-none hidden sm:block hover:underline-offset-2 hover:underline">
-          {track?.album?.name}
-        </p>
-      </Link>
+      {/* the track's album wont show in playlist reco modal */}
+      {!showAlbum && (
+        <Link href={`/album/${track?.album?.id}`}>
+          <p className="text-[#bbb4b4d0] text-[.8rem] text-left truncate w-[150px] sm:w-[200px] md:-[250px] lg:w-[350px] sm:truncate-none hidden sm:block hover:underline-offset-2 hover:underline">
+            {track?.album?.name}
+          </p>
+        </Link>
+      )}
 
       <p className="text-[#898585d0] text-[.6rem] md:text-[.8rem] font-semibold p-1">
         {moment
