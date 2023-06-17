@@ -7,6 +7,7 @@ import {
 } from "@/services/spotify";
 import { usePalette } from "@lauriys/react-palette";
 import { useState, useEffect } from "react";
+import { useNotify } from "@/hooks/useNotify";
 
 import DetailLoader from "./Loaders/DetailLoader";
 import TrackCardLoader from "./Loaders/TrackCardLoader";
@@ -32,6 +33,7 @@ const PlaylistDetails = ({ session }) => {
   );
   const [currentTrackIndex, setCurrentTrackIndex] = useState(0);
   const [opneRecoModal, setOpenRecoModal] = useState(false);
+  const [notificationMessage, makeNotification] = useNotify();
 
   const { data: currentlyPlaying } = useGetCurrentlyPlayingTrackQuery(null, {
     pollingInterval: 1000,
@@ -84,6 +86,8 @@ const PlaylistDetails = ({ session }) => {
             }
             fromPlaylistName={playlistDetails?.name}
             userId={userDetails?.id}
+            setOpenRecoModal={setOpenRecoModal}
+            makeNotification={makeNotification}
           />
         )}
 
@@ -93,6 +97,15 @@ const PlaylistDetails = ({ session }) => {
         >
           Get Recommendation
         </button>
+
+        {/* notification */}
+        {notificationMessage && (
+          <div className="z-20 fixed bottom-2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-blur-sm bg-green-600 rounded-md p-3 md:p-4">
+            <p className="text-white text-[.6rem] sm:text-[.7rem] font-bold">
+              {notificationMessage}
+            </p>
+          </div>
+        )}
 
         {/* Upper part */}
         {/* Player */}

@@ -1,7 +1,7 @@
 "use client";
 import TrackCardLoader from "./Loaders/TrackCardLoader";
 import Track from "./Track";
-import { useNotify } from "@/hooks/useNotify";
+
 
 import {
   useGetTrackRecommendationsQuery,
@@ -13,6 +13,8 @@ const PlaylistRecoModal = ({
   generateTrackIdsForRecommendation,
   fromPlaylistName,
   userId,
+  setOpenRecoModal,
+  makeNotification
 }) => {
   const { data: trackRecommendation, isLoading: isTrackRecoLoading } =
     useGetTrackRecommendationsQuery({
@@ -21,7 +23,6 @@ const PlaylistRecoModal = ({
     });
   const [createPlaylist] = useCreatePlaylistMutation();
   const [addTracksToPlaylist] = useAddTracksToPlaylistMutation();
-  const [notificationMessage, makeNotification] = useNotify();
 
   function getTrackRecommendedUris() {
     return trackRecommendation?.tracks?.map((track) => track?.uri);
@@ -42,20 +43,12 @@ const PlaylistRecoModal = ({
       console.log(error);
     } finally {
       makeNotification("Playlist saved successfully");
+      setOpenRecoModal(false);
     }
   }
 
   return (
     <div className="max-w-[900px] w-[90%] fixed z-20  top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-[#282828] p-6 rounded-xl flex flex-col gap-6">
-      {/* notification */}
-      {notificationMessage && (
-        <div className="z-20 fixed bottom-2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-blur-sm bg-green-600 rounded-md p-3 md:p-4">
-          <p className="text-white text-[.6rem] sm:text-[.7rem] font-bold">
-            {notificationMessage}
-          </p>
-        </div>
-      )}
-
       <h1 className="text-white font-bold text-[1.3rem]">
         Recommended playlist based on {fromPlaylistName}
       </h1>
