@@ -75,9 +75,9 @@ export const spotifyApi = createApi({
     }),
     getTrackRecommendations: builder.query({
       query: (args) => {
-        const { length, topTrackIds } = args;
+        const { length, trackIds } = args;
         return {
-          url: `/recommendations?limit=${length}&seed_tracks=${topTrackIds.join(
+          url: `/recommendations?limit=${length}&seed_tracks=${trackIds.join(
             ","
           )}`,
         };
@@ -135,6 +135,26 @@ export const spotifyApi = createApi({
     getCurrentlyPlayingTrack: builder.query({
       query: () => "/me/player/currently-playing",
     }),
+    createPlaylist: builder.mutation({
+      query: (userId) => ({
+        url: `/users/${userId}/playlists`,
+        method: "POST",
+        body: JSON.stringify({
+          name: "Recommended Playlist",
+          description: "Playlist created at Spotifile",
+          public: false,
+        }),
+      }),
+    }),
+    addTracksToPlaylist: builder.mutation({
+      query: (args) => {
+        const { playlistId, trackUris } = args;
+        return {
+          url: `/playlists/${playlistId}/tracks?uris=${trackUris.join(",")}`,
+          method: "POST",
+        };
+      },
+    }),
   }),
 });
 
@@ -172,4 +192,9 @@ export const {
   //album
   useGetAlbumDetailsQuery,
   useGetCurrentlyPlayingTrackQuery,
+  useLazyGetTrackRecommendationsQuery,
+
+  // create playlist reco
+  useCreatePlaylistMutation,
+  useAddTracksToPlaylistMutation,
 } = spotifyApi;
