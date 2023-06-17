@@ -39,7 +39,7 @@ const Profile = ({ session }) => {
     refetch: refetchTrackReco,
   } = useGetTrackRecommendationsQuery(
     {
-      topTrackIds: generateTopTrackIds(),
+      trackIds: generateTopTrackIds(),
       length: 10,
     },
     session?.accesToken && session
@@ -56,7 +56,6 @@ const Profile = ({ session }) => {
     return topTrackIds;
   }
 
-  
   useEffect(() => {
     if (!session?.accesToken && !session) {
       router.push("/sign-in");
