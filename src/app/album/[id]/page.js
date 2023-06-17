@@ -9,7 +9,7 @@ const AlbumPage = () => {
   const dispatch = useDispatch();
   dispatch(setAccessToken(session?.accessToken));
   
-  return <AlbumDetails accessToken={session?.accessToken} />;
+  return <AlbumDetails session={session} />;
 };
 
 export default AlbumPage;
