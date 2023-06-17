@@ -11,8 +11,10 @@ import { useState, useEffect } from "react";
 import DetailLoader from "./Loaders/DetailLoader";
 import TrackCardLoader from "./Loaders/TrackCardLoader";
 import Track from "./Track";
+import PlaylistRecoModal from "./PlaylistRecoModal";
 import SongPlayer from "./SongPlayer";
 
+//TODO FEAT: GET RECO PLAYLIST
 const PlaylistDetails = ({ session }) => {
   const params = useParams();
   const {
@@ -29,10 +31,13 @@ const PlaylistDetails = ({ session }) => {
     session?.accessToken && session
   );
   const [currentTrackIndex, setCurrentTrackIndex] = useState(0);
+  const [opneRecoModal, setOpenRecoModal] = useState(false);
 
   const { data: currentlyPlaying } = useGetCurrentlyPlayingTrackQuery(null, {
     pollingInterval: 1000,
   });
+
+  // const { data: currentlyPlaying } = useGetCurrentlyPlayingTrackQuery();
 
   const playlistImage = playlistDetails?.images[0]?.url;
   const { data: color } = usePalette(playlistImage);
@@ -44,13 +49,21 @@ const PlaylistDetails = ({ session }) => {
     }
   }, []);
 
-  //for collecting the uris of different tracks inside the playlist
+  //for collecting the uris of different tracks to be played
   function getSongUris() {
-    const uris = [];
-    playlistDetails?.tracks?.items?.forEach((track) => {
-      uris.push(track?.track?.uri);
-    });
-    return uris;
+    return playlistDetails?.tracks?.items?.map((track) => track?.track?.uri);
+  }
+
+  //this generates random track ids for track recommendation playlist reco
+  function generateTrackIdsForRecommendation() {
+    const trackIds = [];
+    for (let i = 1; i <= 5; i++) {
+      let randomIndex = Math.floor(
+        Math.random() * playlistDetails?.tracks?.items.length
+      );
+      trackIds.push(playlistDetails?.tracks?.items[i]?.track?.id);
+    }
+    return trackIds;
   }
 
   return (
@@ -62,7 +75,25 @@ const PlaylistDetails = ({ session }) => {
           "--via-color": "#121212d1",
         }}
       />
-      <div className="w-full max-w-[1400px] md:w-[92%] md:ml-[100px] flex flex-col gap-9 p-8 mb-[200px] md:mb-[90px]">
+      <div className="w-full max-w-[1400px] md:w-[92%] md:ml-[100px] flex flex-col gap-9 p-8 mb-[200px] md:mb-[90px] relative">
+        {/* Recommended playlist modal */}
+        {opneRecoModal && (
+          <PlaylistRecoModal
+            generateTrackIdsForRecommendation={
+              generateTrackIdsForRecommendation
+            }
+            fromPlaylistName={playlistDetails?.name}
+            userId={userDetails?.id}
+          />
+        )}
+
+        <button
+          onClick={() => setOpenRecoModal((prevState) => !prevState)}
+          className="font-medium absolute right-4 top-4 text-xs text-white rounded-full py-2 px-5 transition-all duration-300 hover:text-black hover:bg-white border border-[#dad4d4]"
+        >
+          Get Recommendation
+        </button>
+
         {/* Upper part */}
         {/* Player */}
         <SongPlayer
