@@ -14,6 +14,7 @@ import TrackCardLoader from "./Loaders/TrackCardLoader";
 import Track from "./Track";
 import PlaylistRecoModal from "./PlaylistRecoModal";
 import SongPlayer from "./SongPlayer";
+import { AnimatePresence, motion } from "framer-motion";
 
 //TODO FEAT: GET RECO PLAYLIST
 const PlaylistDetails = ({ session }) => {
@@ -32,7 +33,7 @@ const PlaylistDetails = ({ session }) => {
     session?.accessToken && session
   );
   const [currentTrackIndex, setCurrentTrackIndex] = useState(0);
-  const [opneRecoModal, setOpenRecoModal] = useState(false);
+  const [openRecoModal, setOpenRecoModal] = useState(false);
   const [notificationMessage, makeNotification] = useNotify();
 
   const { data: currentlyPlaying } = useGetCurrentlyPlayingTrackQuery(null, {
@@ -49,7 +50,7 @@ const PlaylistDetails = ({ session }) => {
       refetchPlaylistDetails();
       refetchUserDetails();
     }
-  }, []);
+  }, [session]);
 
   //for collecting the uris of different tracks to be played
   function getSongUris() {
@@ -59,11 +60,11 @@ const PlaylistDetails = ({ session }) => {
   //this generates random track ids for track recommendation playlist reco
   function generateTrackIdsForRecommendation() {
     const trackIds = [];
-    for (let i = 1; i <= 5; i++) {
+    for (let i = 0; i < 5; i++) {
       let randomIndex = Math.floor(
         Math.random() * playlistDetails?.tracks?.items.length
       );
-      trackIds.push(playlistDetails?.tracks?.items[i]?.track?.id);
+      trackIds.push(playlistDetails?.tracks?.items[randomIndex]?.track?.id);
     }
     return trackIds;
   }
@@ -78,34 +79,42 @@ const PlaylistDetails = ({ session }) => {
         }}
       />
       <div className="w-full max-w-[1400px] md:w-[92%] md:ml-[100px] flex flex-col gap-9 p-8 mb-[200px] md:mb-[90px] relative">
+        {/* POP UPS */}
         {/* Recommended playlist modal */}
-        {opneRecoModal && (
-          <PlaylistRecoModal
-            generateTrackIdsForRecommendation={
-              generateTrackIdsForRecommendation
-            }
-            fromPlaylistName={playlistDetails?.name}
-            userId={userDetails?.id}
-            setOpenRecoModal={setOpenRecoModal}
-            makeNotification={makeNotification}
-          />
-        )}
+        <AnimatePresence>
+          {openRecoModal && (
+            <PlaylistRecoModal
+              generateTrackIdsForRecommendation={
+                generateTrackIdsForRecommendation
+              }
+              fromPlaylistName={playlistDetails?.name}
+              userId={userDetails?.id}
+              setOpenRecoModal={setOpenRecoModal}
+              makeNotification={makeNotification}
+              openRecoModal={openRecoModal}
+            />
+          )}
 
+          {notificationMessage && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.3 }}
+              className="z-20 fixed bottom-2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-blur-sm bg-green-600 rounded-md p-3 md:p-4"
+            >
+              <p className="text-white text-[.6rem] sm:text-[.7rem] font-bold">
+                {notificationMessage}
+              </p>
+            </motion.div>
+          )}
+        </AnimatePresence>
         <button
           onClick={() => setOpenRecoModal((prevState) => !prevState)}
           className="font-medium absolute right-4 top-4 text-xs text-white rounded-full py-2 px-5 transition-all duration-300 hover:text-black hover:bg-white border border-[#dad4d4]"
         >
           Get Recommendation
         </button>
-
-        {/* notification */}
-        {notificationMessage && (
-          <div className="z-20 fixed bottom-2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-blur-sm bg-green-600 rounded-md p-3 md:p-4">
-            <p className="text-white text-[.6rem] sm:text-[.7rem] font-bold">
-              {notificationMessage}
-            </p>
-          </div>
-        )}
 
         {/* Upper part */}
         {/* Player */}

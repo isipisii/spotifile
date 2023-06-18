@@ -11,7 +11,8 @@ import {
 } from "@/services/spotify";
 import { useParams } from "next/navigation";
 import { usePalette } from "@lauriys/react-palette";
-import { useCallback, useState, useEffect } from "react";
+import { useState, useEffect } from "react";
+import { AnimatePresence, motion } from "framer-motion";
 
 import Track from "./Track";
 import TrackCardLoader from "./Loaders/TrackCardLoader";
@@ -58,7 +59,6 @@ const ArtistDetails = ({ session }) => {
   const artistImage = artist?.images[0]?.url;
   const { data: color } = usePalette(artistImage); //extract color
   const [albumCount, setAlbumCount] = useState(10);
-  // const [notification, setNotification] = useState(null);
   const [notificationMessage, makeNotification] = useNotify();
 
   // add commas to the followers count
@@ -87,7 +87,6 @@ const ArtistDetails = ({ session }) => {
     }
   }, []);
 
-
   function handleSeeMore() {
     setAlbumCount((prev) => prev + 10);
   }
@@ -102,12 +101,12 @@ const ArtistDetails = ({ session }) => {
     if (isFollowing && isFollowing[0]) {
       unfollowArtist(params.id).then(() => {
         refetchIsFollowing();
-        makeNotification("Artist removed from your following")
+        makeNotification("Artist removed from your following");
       });
     } else {
       followArtist(params.id).then(() => {
         refetchIsFollowing();
-        makeNotification("Artist added to your following")
+        makeNotification("Artist added to your following");
       });
     }
   }
@@ -123,14 +122,23 @@ const ArtistDetails = ({ session }) => {
         }}
       />
       <div className="w-full max-w-[1400px] md:w-[92%] md:ml-[100px] relative flex flex-col gap-9 p-8">
+        {/* POP UP */}
         {/* notification */}
-        {notificationMessage && (
-          <div className="z-20 fixed bottom-2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-blur-sm bg-green-600 rounded-md p-3 md:p-4">
-            <p className="text-white text-[.6rem] sm:text-[.7rem] font-bold">
-              {notificationMessage}
-            </p>
-          </div>
-        )}
+        <AnimatePresence>
+          {notificationMessage && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.3 }}
+              className="z-20 fixed bottom-2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-blur-sm bg-green-600 rounded-md p-3 md:p-4"
+            >
+              <p className="text-white text-[.6rem] sm:text-[.7rem] font-bold">
+                {notificationMessage}
+              </p>
+            </motion.div>
+          )}
+        </AnimatePresence>
 
         <div className="flex flex-col md:items-end md:flex-row gap-4 md:gap-8 mt-8">
           {(isFollowingLoading && isArtistLoading) || !artist ? (
