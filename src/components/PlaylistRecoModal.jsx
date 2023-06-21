@@ -29,9 +29,9 @@ const PlaylistRecoModal = ({
       length: 50,
       trackIds: cachedTrackRecommendation,
     });
-  const [createPlaylist, { isSuccess: isPlaylistSuccess }] =
+  const [createPlaylist, ] =
     useCreatePlaylistMutation();
-  const [addTracksToPlaylist, { isSuccess: isTracksSuccess }] =
+  const [addTracksToPlaylist] =
     useAddTracksToPlaylistMutation();
 
   function getTrackRecommendedUris() {
@@ -66,7 +66,7 @@ const PlaylistRecoModal = ({
         transition={{type: "tween"}}
       >
         <div className="flex  items-center justify-between">
-          <h1 className="text-white font-bold text-[1.3rem]">
+          <h1 className="text-white font-bold text-[1rem] md:text-[1.3rem] ">
             Recommended playlist based on {fromPlaylistName}
           </h1>
           <div
@@ -95,7 +95,7 @@ const PlaylistRecoModal = ({
             )}
           </div>
           <button
-            className="text-black self-end font-semibold bg-white rounded-full py-3 px-4 text-[.9rem]"
+            className="text-black self-end font-semibold bg-white rounded-full py-3 px-4 text-[.8rem] md:text-[.9rem]"
             onClick={() => saveRecommendedTrack(userId)}
           >
             Save to Spotify

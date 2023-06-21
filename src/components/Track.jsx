@@ -35,12 +35,12 @@ const Track = ({
 
   return (
     <div
-      className="flex justify-between hover:bg-[#5655556f] p-2 items-center rounded-md relative"
+      className="flex justify-between hover:bg-[#5655556f] p-2 items-center gap-16 rounded-md relative"
       onClick={() => setCurrentTrackIndex(index)}
     >
       <div className="flex gap-3 items-center justify-between">
         {renderCount && (
-          <p className="text-[#bcbcbcab] text-xs sm:text-sm p-1 font-semibold">
+          <p className="text-[#bcbcbcab] text-[.6rem] sm:text-[.75rem] p-1 font-semibold">
             {index + 1}
           </p>
         )}
@@ -48,18 +48,18 @@ const Track = ({
         <img
           loading="lazy"
           src={isInAlbum ? albumImage : track?.album?.images[0]?.url}
-          className="w-[45px] h-[45px] sm:w-[50px] md:h-[50px] rounded-sm"
+          className="w-[40px] h-[40px] sm:w-[45px] md:h-[45px] rounded-sm"
           alt=""
         />
         <div>
           <p
             className={`${
               isTrackPlaying() ? "text-green-400" : "text-white"
-            } text-[.85rem] md:text-[.9rem] truncate w-[150px] sm:w-[200px] md:-[250px] lg:w-[350px] sm:truncate-none font-medium`}
+            } text-[.7rem] md:text-[.9rem] truncate w-[140px] sm:w-[180px] md:-[250px] lg:w-[350px] sm:truncate-none font-medium`}
           >
             {track?.name}
           </p>
-          <p className="text-[#898585d0] text-[.7rem] md:text-[.8rem] truncate w-[150px] sm:w-[200px] md:-[250px] lg:w-[350px] sm:truncate-none">
+          <p className="text-[#898585d0] text-[.6rem] md:text-[.8rem] truncate w-[150px] sm:w-[200px] md:-[250px] lg:w-[350px] sm:truncate-none">
             {formatArtistNames()}
           </p>
         </div>
