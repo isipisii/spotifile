@@ -49,7 +49,7 @@ export async function getRefreshedAccessToken(token) {
     ...token,
     accessToken: data.access_token,
     refreshToken: data.refresh_token ?? token.refreshToken,
-    accessTokenExpires: Date.now() + 5 * 24 * 60 * 60 * 1000,
+    accessTokenExpires: Date.now() + data.expires_in * 1000,
   };
 }
 
@@ -62,6 +62,7 @@ const handler = NextAuth({
       authorization: LOGIN_URL,
     }),
   ],
+  redirectUri: "https://spotifile.vercel.app/api/auth/callback/spotify",
   secret: process.env.JWT_SECRET,
   callbacks: {
     async jwt({ token, account }) {
