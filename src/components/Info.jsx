@@ -36,7 +36,7 @@ const Info = () => {
                 Disclaimer
               </h1>
               <p className="text-[#a8a5a5] text-center text-[.9rem] md:text-[1rem]">
-                This application do not collect or store user's information.
+                This application do not collect or store user information.
                 This was made for learning purposes only.
               </p>
               <button
