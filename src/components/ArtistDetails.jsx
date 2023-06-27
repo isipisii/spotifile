@@ -131,7 +131,7 @@ const ArtistDetails = ({ session }) => {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               transition={{ duration: 0.3 }}
-              className="z-20 fixed bottom-2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-blur-sm bg-green-600 rounded-md p-3 md:p-4"
+              className="z-20 w-[200px] md:w-[250px] text-center fixed bottom-2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-blur-sm bg-green-600 rounded-md py-3 md:py-4"
             >
               <p className="text-white text-[.6rem] sm:text-[.7rem] font-bold">
                 {notificationMessage}
