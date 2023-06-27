@@ -3,6 +3,8 @@ import TrackCardLoader from "./Loaders/TrackCardLoader";
 import Track from "./Track";
 import { CgClose } from "react-icons/cg";
 import { motion } from "framer-motion";
+import { useDispatch } from "react-redux";
+import { closeRecoModal } from "@/slice/modalSlice";
 
 import {
   useGetTrackRecommendationsQuery,
@@ -16,18 +18,18 @@ const PlaylistRecoModal = ({
   generateTrackIdsForRecommendation,
   fromPlaylistName,
   userId,
-  setOpenRecoModal,
   makeNotification,
-  openRecoModal,
+  isRecoModalOpen,
 }) => {
-  const cachedTrackRecommendation = useMemo(
+  const dispatch = useDispatch();
+  const cachedTrackIdsForRecommendation = useMemo(
     () => generateTrackIdsForRecommendation(),
-    [openRecoModal]
+    [isRecoModalOpen]
   );
   const { data: trackRecommendation, isLoading: isTrackRecoLoading } =
     useGetTrackRecommendationsQuery({
       length: 50,
-      trackIds: cachedTrackRecommendation,
+      trackIds: cachedTrackIdsForRecommendation,
     });
   const [createPlaylist, ] =
     useCreatePlaylistMutation();
@@ -52,7 +54,7 @@ const PlaylistRecoModal = ({
       console.log(error);
     } finally {
       makeNotification("Playlist saved successfully");
-      setOpenRecoModal(false);
+      dispatch(closeRecoModal())
     }
   }
 
@@ -71,7 +73,7 @@ const PlaylistRecoModal = ({
           </h1>
           <div
             className=" hover:bg-[#ffffff18] rounded-full p-2"
-            onClick={() => setOpenRecoModal(false)}
+            onClick={() => dispatch(closeRecoModal())}
           >
             <CgClose className="text-[#a8a5a5] text-[1.3rem]" />
           </div>

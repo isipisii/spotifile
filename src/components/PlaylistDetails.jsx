@@ -8,6 +8,8 @@ import {
 import { usePalette } from "@lauriys/react-palette";
 import { useState, useEffect } from "react";
 import { useNotify } from "@/hooks/useNotify";
+import { openRecoModal } from "@/slice/modalSlice";
+import { useDispatch, useSelector } from "react-redux";
 
 import DetailLoader from "./Loaders/DetailLoader";
 import TrackCardLoader from "./Loaders/TrackCardLoader";
@@ -16,9 +18,10 @@ import PlaylistRecoModal from "./PlaylistRecoModal";
 import SongPlayer from "./SongPlayer";
 import { AnimatePresence, motion } from "framer-motion";
 
-//TODO FEAT: GET RECO PLAYLIST
 const PlaylistDetails = ({ session }) => {
   const params = useParams();
+  const { isRecoModalOpen } = useSelector((state) => state.modal);
+  const dispatch = useDispatch();
   const {
     data: playlistDetails,
     isLoading: isPlaylistLoading,
@@ -33,7 +36,6 @@ const PlaylistDetails = ({ session }) => {
     session?.accessToken && session
   );
   const [currentTrackIndex, setCurrentTrackIndex] = useState(0);
-  const [openRecoModal, setOpenRecoModal] = useState(false);
   const [notificationMessage, makeNotification] = useNotify();
 
   const { data: currentlyPlaying } = useGetCurrentlyPlayingTrackQuery(null, {
@@ -82,16 +84,15 @@ const PlaylistDetails = ({ session }) => {
         {/* POP UPS */}
         {/* Recommended playlist modal */}
         <AnimatePresence>
-          {openRecoModal && (
+          {isRecoModalOpen && (
             <PlaylistRecoModal
               generateTrackIdsForRecommendation={
                 generateTrackIdsForRecommendation
               }
               fromPlaylistName={playlistDetails?.name}
               userId={userDetails?.id}
-              setOpenRecoModal={setOpenRecoModal}
               makeNotification={makeNotification}
-              openRecoModal={openRecoModal}
+              isRecoModalOpen={isRecoModalOpen}
             />
           )}
 
@@ -110,7 +111,7 @@ const PlaylistDetails = ({ session }) => {
           )}
         </AnimatePresence>
         <button
-          onClick={() => setOpenRecoModal((prevState) => !prevState)}
+          onClick={() => dispatch(openRecoModal())}
           className="font-medium absolute right-4 top-4 text-xs text-white rounded-full py-2 px-5 transition-all duration-300 hover:text-black hover:bg-white border border-[#dad4d4]"
         >
           Get Recommendation
@@ -125,7 +126,7 @@ const PlaylistDetails = ({ session }) => {
         />
 
         <div className="flex flex-col md:items-end md:flex-row gap-4 md:gap-8 my-8">
-          {isPlaylistLoading || !playlistDetails ? (
+          {isPlaylistLoading || !playlistDetails || isUserLoading ? (
             <DetailLoader />
           ) : (
             <>
