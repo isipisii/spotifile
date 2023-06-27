@@ -5,6 +5,7 @@ import SeshProvider from "@/components/SeshProvider";
 import NavBar from "@/components/NavBar";
 import { Provider } from "react-redux";
 import { store } from "@/store";
+import Info from "@/components/Info";
 
 const montserrat = Montserrat({ subsets: ["latin"] });
 
@@ -20,6 +21,7 @@ export default function RootLayout({ children }) {
         <html lang="en">
           <body className={`${montserrat.className} bg-[#121212]`}>
             <NavBar />
+            <Info />
             {children}
           </body>
         </html>
