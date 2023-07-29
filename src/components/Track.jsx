@@ -35,7 +35,7 @@ const Track = ({
 
   return (
     <div
-      className="flex justify-between hover:bg-[#5655556f] p-2 items-center md:gap-16 rounded-md relative"
+      className="flex justify-between hover:bg-[#5655556f] p-2 items-center md:gap-16 rounded-md relative cursor-pointer"
       onClick={() => setCurrentTrackIndex(index)}
     >
       <div className="flex gap-3 items-center justify-between">
