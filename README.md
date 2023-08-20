@@ -1,6 +1,6 @@
 # Spotifile
 
-### An app inspired by Britanny Chiang built with NextJS, Next-Auth, TailwindCSS, and Spotify API.
+### An app inspired by Britanny Chiang built with NextJS, Next-Auth, TailwindCSS, RTK and RTK Query, and Spotify API.
 
 ## Features 
 -   [x] User authentication
