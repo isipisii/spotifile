@@ -7,7 +7,7 @@
 -   [x] View Artists, Playlists, Top Artists and Tracks, and Recently Played
 -   [x] Follow artists
 -   [x] Display artist's details such as albums, popular tracks, and related artists
--   [x] PLay tracks in user playlists
+-   [x] Play tracks in user playlists
 -   [x] Save playlist suggestion
 
 ![Screenshot (5)](https://github.com/isipisii/spotifile/assets/109065655/afc87854-3000-48d2-a7e0-93759eacbf4c)
